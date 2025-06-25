@@ -1,0 +1,46 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getCurrentUser } from "@/auth/nextjs/currentUser";
+import { db } from "@/drizzle/db";
+import { UserTable } from "@/drizzle/schema";
+import { eq } from "drizzle-orm";
+
+export async function GET(request: NextRequest) {
+  try {
+    const currentUser = await getCurrentUser({ withFullUser: true });
+    
+    if (!currentUser) {
+      return NextResponse.json(
+        { message: "ไม่พบผู้ใช้งาน" },
+        { status: 401 }
+      );
+    }
+
+    // Check if user is a tenant
+    const tenant = await db.query.TenantTable.findFirst({
+      where: eq(UserTable.id, currentUser.id)
+    });
+
+    if (!tenant) {
+      return NextResponse.json(
+        { message: "ไม่ใช่ผู้เช่า" },
+        { status: 403 }
+      );
+    }
+
+    return NextResponse.json({
+      message: "เป็นผู้เช่า",
+      tenant: {
+        id: tenant.id,
+        name: tenant.name,
+        email: tenant.email
+      }
+    });
+
+  } catch (error) {
+    console.error("Error checking tenant status:", error);
+    return NextResponse.json(
+      { message: "เกิดข้อผิดพลาดในการตรวจสอบสถานะ" },
+      { status: 500 }
+    );
+  }
+} 

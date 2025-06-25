@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# Array of replacement pairs
+declare -A color_map=(
+  ["black-500"]="#4F5665"
+  ["black-600"]="#0B132A"
+  ["blue-100"]="#EFF6FF"
+  ["blue-500"]="#3491b4"
+  ["blue-600"]="#67aac3"
+  ["green-500"]="#2FAB73"
+  ["green-600"]="#04924e"
+  ["white-300"]="#F8F8F8"
+  ["white-500"]="#fff"
+  ["gray-100"]="#EEEFF2"
+  ["gray-400"]="#AFB5C0"
+  ["gray-500"]="#DDDDDD"
+  ["red-500"]="#ff5757"
+  ["red-600"]="#e73333"
+  ["sky-400"]="#9bc7d7"
+  ["sky-blue-500"]="#67aac3"
+  ["custom-scrollLabel"]="#daf8fd"
+  ["custom-what"]="#01BCB4"
+  ["custom-the"]="#C0E8ED"
+  ["custom-hell"]="#abccdd"
+  ["custom-is"]="#FFAC3E"
+  ["ice-blue-100"]="#daf8fd"
+)
+
+# Find all relevant files excluding .next and node_modules
+find . -type d \( -name ".next" -o -name "node_modules" \) -prune -o \
+  -type f \( -name '*.ts' -o -name '*.tsx' -o -name '*.js' -o -name '*.jsx' -o -name '*.css' \) -print0 | while IFS= read -r -d '' file; do
+  for color in "${!color_map[@]}"; do
+    hex=${color_map[$color]}
+    # Linux
+    sed -i "s/\b${color}\b/${hex}/g" "$file"
+    # macOS (uncomment below and comment above if needed)
+    # sed -i '' "s/\b${color}\b/${hex}/g" "$file"
+  done
+done
+
+echo "Color replacements complete!"
