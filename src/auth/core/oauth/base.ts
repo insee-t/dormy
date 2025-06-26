@@ -76,7 +76,7 @@ export class OAuthClient<T> {
     url.searchParams.set("state", state)
     url.searchParams.set("code_challenge_method", "S256")
     url.searchParams.set("code_challenge",
-                        crypto.hash("sha256", codeVerifier, "base64url"))
+                        crypto.createHash("sha256").update(codeVerifier).digest("base64url"))
     return url.toString()
   }
 
