@@ -20,7 +20,7 @@ const FeatureLayout = () => {
   return (
     <div>
       <Header />
-      <div className="min-h-screen w-full bg-gradient-to-b from-sky-200/30 to-white">
+      <div className="min-h-screen w-full bg-gradient-to-b from-[#01BCB4]/30 to-white">
         <FeatureSite activeTab={activeTab} onTabChange={setActiveTab} />
         <HeroSection activeTab={activeTab} />
       </div>

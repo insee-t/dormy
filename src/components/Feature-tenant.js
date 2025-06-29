@@ -72,14 +72,14 @@ const Navigation = ({ activeTab, onTabChange }) => {
             ฟังก์ชั่นฝั่งผู้ประกอบการ (เจ้าของหอพัก)
           </h1>
           <p style={subtitleStyle}>
-            LinkCo ดูแลครบ จบทุกเรื่องหอพัก เพื่อชีวิตที่ง่ายกว่า
+            Dormy ดูแลครบ จบทุกเรื่องหอพัก เพื่อชีวิตที่ง่ายกว่า
           </p>
           <div style={buttonContainerStyle}>
             {navItems.map((item, index) => {
               const isActive = activeTab === item.title;
               const buttonStyle = {
                 ...buttonBaseStyle,
-                backgroundColor: isActive ? '#67AAC3' : '#DAF8FD',
+                backgroundColor: isActive ? '#01BCB4' : '#E6F7F6',
                 color: isActive ? 'white' : '#374151',
               };
               

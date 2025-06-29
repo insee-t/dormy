@@ -1,14 +1,15 @@
-"use server"
+"use client"
 
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import HeaderComponent from "./HeaderComponent";
 
-async function handleLogoClick() {
-  "use server"
-  redirect("/")
-};
+export default function Header() {
+  const router = useRouter();
 
-export default async function Header() {
+  const handleLogoClick = () => {
+    router.push("/");
+  };
+
   return (
     <HeaderComponent handleLogoClickAction={handleLogoClick}></HeaderComponent>
   );

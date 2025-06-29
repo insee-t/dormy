@@ -1,0 +1,12 @@
+Cannot update a component (`Router`) while rendering a different component (`default`). To locate the bad setState() call inside `default`, follow the stack trace as described in https://react.dev/link/setstate-in-render
+
+src/app/site/page.js (22:7) @ FeatureLayout
+
+  20 |   return (
+  21 |     <div>
+> 22 |       <Header />
+     |       ^
+  23 |       <div className="min-h-screen w-full bg-gradient-to-b from-sky-200/30 to-white">
+  24 |         <FeatureSite activeTab={activeTab} onTabChange={setActiveTab} />
+  25 |         <HeroSection activeTab={activeTab} />
+

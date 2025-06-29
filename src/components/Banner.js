@@ -10,23 +10,27 @@ const Header = () => {
   const scrollAnimation = useMemo(() => getScrollAnimation(), []);
 
   return (
-    <ScrollAnimationWrapper>
-      <motion.div 
-        className="flex items-center w-full"
-        variants={scrollAnimation}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true }}
-      >
-        <Image
-          src="/assets/banner.png"
-          alt="Logo"
-          width={2000}
-          height={300}
-          className="w-full object-contain"
-        />
-      </motion.div>
-    </ScrollAnimationWrapper>
+    <div className="bg-gradient-to-r from-[#01BCB4]/5 via-white to-[#FFAC3E]/5">
+      <ScrollAnimationWrapper>
+        <motion.div 
+          className="flex items-center w-full mx-auto "
+          variants={scrollAnimation}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+        >
+            <div className="w-full shadow-xl">
+              <Image
+                src="/assets/banner.png"
+                alt="Logo"
+                width={2000}
+                height={300}
+                className="w-full object-contain"
+              />
+            </div>
+        </motion.div>
+      </ScrollAnimationWrapper>
+    </div>
   );
 };
 

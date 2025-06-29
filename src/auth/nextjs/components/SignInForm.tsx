@@ -172,7 +172,7 @@ export function SignInForm() {
             <span>ยังไม่มีบัญชี ?</span>
             <span className="ml-1">
               <Link
-                href={userType === 'user' ? '/tenant/register' : '/register'}
+                href={userType === 'user' ? '/tenant/register' : '/sign-up'}
                 className="text-[#01BCB4] hover:text-[#01a8a0] font-medium hover:underline transition-colors"
               >
                 สร้างบัญชีที่นี่

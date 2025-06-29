@@ -31,7 +31,7 @@ const HeroSection = ({ activeTab }) => {
       title: "ทำบิล",
       titleHighlight: " ",
       description:
-        "ออกใบแจ้งค่าเช่าและส่งบิลให้ผู้เช่าได้ง่ายๆ ออนไลน์ ผ่าน Web LinkCo ผู้เช่าสามารถรับบิลได้ทุกที่ และออกใบเสร็จอัตโนมัติหลังการชำระเงินเรียบร้อยแล้ว",
+        "ออกใบแจ้งค่าเช่าและส่งบิลให้ผู้เช่าได้ง่ายๆ ออนไลน์ ผ่าน Web Dormy ผู้เช่าสามารถรับบิลได้ทุกที่ และออกใบเสร็จอัตโนมัติหลังการชำระเงินเรียบร้อยแล้ว",
       image: "/assets/rent-bill.png",
       imageAlt: "ระบบจัดการผังห้องพัก",
     },
@@ -95,7 +95,7 @@ const HeroSection = ({ activeTab }) => {
           <div className="flex flex-col">
             <h2 className="text-4xl font-bold mb-6">
               {content.title}{" "}
-              <span className="text-#67aac3">{content.titleHighlight}</span>
+              <span className="text-[#67aac3]">{content.titleHighlight}</span>
             </h2>
             <p className="text-lg text-gray-600 mb-8">{content.description}</p>
             {/* <div className="flex space-x-4">

@@ -15,7 +15,7 @@ export default async function Home() {
 
   return (
     <>
-      <SeoHead title='LinkCo' />
+      <SeoHead title='Dormy' />
       <Layout>
         <Hero />
         <Banner/>

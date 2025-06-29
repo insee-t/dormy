@@ -11,23 +11,33 @@ export default function HeaderComponent({handleLogoClickAction} : {handleLogoCli
   const [scrollActive, setScrollActive] = useState(false);
 
   useEffect(() => {
-    window.addEventListener("scroll", () => {
+    const handleScroll = () => {
       setScrollActive(window.scrollY > 20);
-    });
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    
+    // Cleanup function to remove event listener
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
     <>
       <header
         className={
-          "fixed top-0 w-full  z-30 bg-white transition-all " +
-            (scrollActive ? " shadow-md pt-0" : " pt-4")
+          "fixed top-0 w-full z-30 transition-all duration-300 " +
+            (scrollActive 
+              ? "bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100 pt-0" 
+              : "bg-white/80 backdrop-blur-sm pt-4"
+            )
         }
       >
         <nav className="max-w-screen-xl px-6 sm:px-8 lg:px-16 mx-auto grid grid-flow-col py-3 sm:py-4">
           <div
             onClick={handleLogoClickAction}
-            className="cursor-pointer"
+            className="cursor-pointer transform hover:scale-105 transition-transform duration-200"
           >
             <Image
               src={LogoVPN}
@@ -37,7 +47,7 @@ export default function HeaderComponent({handleLogoClickAction} : {handleLogoCli
               className="object-contain"
             />
           </div>
-          <ul className="hidden lg:flex col-start-4 col-end-8 text-[#4F5665] items-center">
+          <ul className="hidden lg:flex col-start-4 col-end-8 text-gray-600 items-center">
             <LinkScroll
               activeClass="active"
               to="about"
@@ -48,10 +58,11 @@ export default function HeaderComponent({handleLogoClickAction} : {handleLogoCli
                 setActiveLink("about");
               }}
               className={
-                "px-4 py-2 mx-2 cursor-pointer animation-hover inline-block relative" +
+                "px-4 py-2 mx-2 cursor-pointer animation-hover inline-block relative font-medium transition-all duration-300" +
                   (activeLink === "about"
-                    ? " text-orange-500 animation-active "
-                    : " text-[#4F5665] hover:text-orange-500 a")
+                    ? " text-[#01BCB4] font-semibold"
+                    : " text-gray-600 hover:text-[#01BCB4] hover:font-medium"
+                  )
               }
             >
               หน้าหลัก
@@ -66,16 +77,17 @@ export default function HeaderComponent({handleLogoClickAction} : {handleLogoCli
                 setActiveLink("pricing");
               }}
               className={
-                "px-4 py-2 mx-2 cursor-pointer animation-hover inline-block relative" +
+                "px-4 py-2 mx-2 cursor-pointer animation-hover inline-block relative font-medium transition-all duration-300" +
                   (activeLink === "pricing"
-                    ? " text-orange-500 animation-active "
-                    : " text-[#4F5665] hover:text-orange-500 ")
+                    ? " text-[#01BCB4] font-semibold"
+                    : " text-gray-600 hover:text-[#01BCB4] hover:font-medium"
+                  )
               }
             >
               ฟังก์ชัน
             </LinkScroll>
             <Link
-              className="px-4 py-2 mx-2 cursor-pointer animation-hover inline-block relative  text-[#4F5665] hover:text-orange-500 "
+              className="px-4 py-2 mx-2 cursor-pointer animation-hover inline-block relative font-medium text-gray-600 hover:text-[#01BCB4] hover:font-medium transition-all duration-300"
               href="/dashboard/subscription"
             >
               แพ็กเกจ
@@ -90,32 +102,36 @@ export default function HeaderComponent({handleLogoClickAction} : {handleLogoCli
                 setActiveLink("testimoni");
               }}
               className={
-                "px-4 py-2 mx-2 cursor-pointer animation-hover inline-block relative" +
+                "px-4 py-2 mx-2 cursor-pointer animation-hover inline-block relative font-medium transition-all duration-300" +
                   (activeLink === "testimoni"
-                    ? " text-orange-500 animation-active "
-                    : " text-[#4F5665] hover:text-orange-500 ")
+                    ? " text-[#01BCB4] font-semibold"
+                    : " text-gray-600 hover:text-[#01BCB4] hover:font-medium"
+                  )
               }
             >
               ติดต่อเรา
             </LinkScroll>
           </ul>
           <div className="col-start-10 col-end-12 font-medium flex justify-end items-center">
-            <Link href="/sign-up">
+            <Link 
+              href="/sign-up"
+              className="text-[#01BCB4] hover:text-[#01BCB4]/80 font-semibold transition-colors duration-300"
+            >
               เริ่มต้นใช้งานฟรี 90 วัน
             </Link>
-              <Link
-                href="/sign-in"
-                className="px-4 py-2 border border-current rounded-md text-[#4F5665] hover:text-gray-800 hover:border-gray-800 transition-colors ml-5"
-              >
-                เข้าสู่ระบบ
-              </Link>
+            <Link
+              href="/sign-in"
+              className="px-6 py-2 border-2 border-[#01BCB4] rounded-lg text-[#01BCB4] hover:bg-[#01BCB4] hover:text-white transition-all duration-300 ml-5 font-semibold hover:shadow-lg transform hover:-translate-y-0.5"
+            >
+              เข้าสู่ระบบ
+            </Link>
           </div>
         </nav>
       </header>
 
-      <nav className="fixed lg:hidden bottom-0 left-0 right-0 z-20 px-4 sm:px-8 shadow-t ">
-        <div className="bg-white sm:px-3">
-          <ul className="flex w-full justify-between items-center text-[#4F5665]">
+      <nav className="fixed lg:hidden bottom-0 left-0 right-0 z-20 px-4 sm:px-8 shadow-t bg-white/95 backdrop-blur-md border-t border-gray-100">
+        <div className="sm:px-3">
+          <ul className="flex w-full justify-between items-center text-gray-600">
             <LinkScroll
               activeClass="active"
               to="about"
@@ -126,26 +142,12 @@ export default function HeaderComponent({handleLogoClickAction} : {handleLogoCli
                 setActiveLink("about");
               }}
               className={
-                "mx-1 sm:mx-2 px-3 sm:px-4 py-2 flex flex-col items-center text-xs border-t-2 transition-all text-[#4F5665] " +
+                "mx-1 sm:mx-2 px-3 sm:px-4 py-2 flex flex-col items-center text-xs border-t-2 transition-all font-medium " +
                   (activeLink === "about"
-                    ? "  border-orange-500 text-orange-500"
-                    : " border-transparent")
+                    ? " border-[#01BCB4] text-[#01BCB4]"
+                    : " border-transparent text-gray-600 hover:text-[#01BCB4]")
               }
             >
-              {/* <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              >
-               <path
-               strokeLinecap="round"
-               strokeLinejoin="round"
-               strokeWidth={2}
-               d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-               />
-               </svg> */}
               หน้าหลัก
             </LinkScroll>
             <LinkScroll
@@ -158,26 +160,12 @@ export default function HeaderComponent({handleLogoClickAction} : {handleLogoCli
                 setActiveLink("pricing");
               }}
               className={
-                "mx-1 sm:mx-2 px-3 sm:px-4 py-2 flex flex-col items-center text-xs border-t-2 transition-all " +
+                "mx-1 sm:mx-2 px-3 sm:px-4 py-2 flex flex-col items-center text-xs border-t-2 transition-all font-medium " +
                   (activeLink === "pricing"
-                    ? "  border-orange-500 text-orange-500"
-                    : " border-transparent ")
+                    ? " border-[#01BCB4] text-[#01BCB4]"
+                    : " border-transparent text-gray-600 hover:text-[#01BCB4]")
               }
             >
-              {/* <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              >
-               <path
-               strokeLinecap="round"
-               strokeLinejoin="round"
-               strokeWidth={2}
-               d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-               />
-               </svg> */}
               ฟังก์ชัน
             </LinkScroll>
             <LinkScroll
@@ -190,26 +178,12 @@ export default function HeaderComponent({handleLogoClickAction} : {handleLogoCli
                 setActiveLink("testimoni");
               }}
               className={
-                "mx-1 sm:mx-2 px-3 sm:px-4 py-2 flex flex-col items-center text-xs border-t-2 transition-all " +
+                "mx-1 sm:mx-2 px-3 sm:px-4 py-2 flex flex-col items-center text-xs border-t-2 transition-all font-medium " +
                   (activeLink === "testimoni"
-                    ? "  border-orange-500 text-orange-500"
-                    : " border-transparent ")
+                    ? " border-[#01BCB4] text-[#01BCB4]"
+                    : " border-transparent text-gray-600 hover:text-[#01BCB4]")
               }
             >
-              {/* <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              >
-               <path
-               strokeLinecap="round"
-               strokeLinejoin="round"
-               strokeWidth={2}
-               d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-               />
-               </svg> */}
               ติดต่อเรา
             </LinkScroll>
           </ul>
