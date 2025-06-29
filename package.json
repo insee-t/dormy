@@ -41,11 +41,11 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.58.0",
-    "react-scroll": "^1.9.3",
     "redis": "^5.5.6",
     "sonner": "^2.0.5",
     "stripe": "^18.2.1",
     "tailwind-merge": "^3.3.1",
+    "thai-baht-text": "^2.0.5",
     "usehooks-ts": "^3.1.1",
     "zod": "^3.25.64"
   },

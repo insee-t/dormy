@@ -129,3 +129,5 @@ people are dumb they may insert meter incorrect in the prev Month
 # we kinda need to make sure it secure with accept tennat function. or password but I think password are too much.
 
 # Change all linkco to dormy.
+
+# require user to enter real thai name (no last name).

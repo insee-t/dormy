@@ -1,3 +1,5 @@
+import thaiBahtText from 'thai-baht-text';
+
 export default function invoiceTemplate(data) {
   const { company, customer, invoice, items, summary } = data;
 
@@ -19,19 +21,19 @@ export default function invoiceTemplate(data) {
   <head>
     <meta charset="UTF-8" />
     <style>
-      body { font-family: 'TH SarabunPSK', Arial, sans-serif; font-size: 16px; margin: 0; padding: 0; }
+      body { font-family: 'TH SarabunPSK', Arial, sans-serif; font-size: 9.6px; margin: 0; padding: 0; }
       .invoice-box { width: 800px; margin: auto; padding: 24px; border: 1px solid #eee; background: #fff; }
       .header { display: flex; align-items: flex-start; }
-      .logo { width: 80px; margin-right: 16px; }
+      .logo { width: 48px; margin-right: 16px; }
       .company-info { flex: 1; }
-      .invoice-title { text-align: right; font-size: 24px; font-weight: bold; }
+      .invoice-title { text-align: right; font-size: 14.4px; font-weight: bold; }
       .section { margin-top: 16px; }
       table { width: 100%; border-collapse: collapse; margin-top: 12px; }
-      th, td { border: 1px solid #ddd; padding: 8px; }
+      th, td { border: 1px solid #ddd; padding: 4.8px; }
       th { background: #f5f5f5; }
       .summary-table td { border: none; }
-      .footer { margin-top: 32px; }
-      .copy { color: #888; font-size: 14px; }
+      .footer { margin-top: 19.2px; }
+      .copy { color: #888; font-size: 8.4px; }
     </style>
   </head>
   <body>
@@ -49,16 +51,18 @@ export default function invoiceTemplate(data) {
           <span class="copy">${invoice.isOriginal ? "ต้นฉบับ (Original)" : "สำเนา (Copy)"}</span>
         </div>
       </div>
-      <div class="section">
-        <b>ลูกค้า (Customer)</b><br/>
-        ${customer.name}<br/>
-        ${customer.address}
-      </div>
-      <div class="section">
-        เลขที่ ${invoice.number} <br/>
-        วันที่ ${invoice.date} <br/>
-        ห้อง ${invoice.room} <br/>
-        พนักงาน ${invoice.staff}
+      <div class="section" style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div style="flex: 1;">
+          <b>ลูกค้า (Customer)</b><br/>
+          ${customer.name}<br/>
+          ${customer.address}
+        </div>
+        <div style="text-align: right; min-width: 220px;">
+          เลขที่ ${invoice.number} <br/>
+          วันที่ ${invoice.date} <br/>
+          ห้อง ${invoice.room} <br/>
+          พนักงาน ${invoice.staff}
+        </div>
       </div>
       <div class="section">
         <table>
@@ -100,10 +104,13 @@ export default function invoiceTemplate(data) {
             <td style="text-align:right;"><b>${summary.totalDue.toFixed(2)}</b></td>
           </tr>
         </table>
+        <div style="margin-top: 4.8px; font-size: 9px; font-weight: bold; text-align: right;">
+          ( ${thaiBahtText(summary.totalDue)} )
+        </div>
       </div>
-      <div class="footer">
-        <div>ลงชื่อ ....................................................... ผู้วางบิล</div>
-        <div>(.......................................................)</div>
+      <div style="text-align: right;" class="footer">
+        <div>ลงชื่อ ..................................................... ผู้วางบิล</div>
+        <div>(.......................................................................)</div>
       </div>
     </div>
   </body>

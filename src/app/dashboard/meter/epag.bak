@@ -20,7 +20,6 @@ import {
 import { ChevronDown, Droplets, Receipt, SearchIcon, Zap } from "lucide-react";
 
 import { Button } from "@heroui/button";
-import { color } from "framer-motion";
 import SettingNav from "../../components/settingnav";
 // import DatePickerComponent from "../../components/DatePickerComponent";
 

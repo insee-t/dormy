@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import Image from 'next/image';
 import Link from "next/link";
-import { Link as LinkScroll } from "react-scroll";
 import LogoVPN from "/public/assets/Logo.png";
 
 export default function HeaderComponent({handleLogoClickAction} : {handleLogoClickAction: () => void}) {
@@ -22,6 +21,13 @@ export default function HeaderComponent({handleLogoClickAction} : {handleLogoCli
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const handleSmoothScroll = (targetId: string) => {
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <>
@@ -48,13 +54,9 @@ export default function HeaderComponent({handleLogoClickAction} : {handleLogoCli
             />
           </div>
           <ul className="hidden lg:flex col-start-4 col-end-8 text-gray-600 items-center">
-            <LinkScroll
-              activeClass="active"
-              to="about"
-              spy={true}
-              smooth={true}
-              duration={1000}
-              onSetActive={() => {
+            <button
+              onClick={() => {
+                handleSmoothScroll("about");
                 setActiveLink("about");
               }}
               className={
@@ -66,14 +68,10 @@ export default function HeaderComponent({handleLogoClickAction} : {handleLogoCli
               }
             >
               หน้าหลัก
-            </LinkScroll>
-            <LinkScroll
-              activeClass="active"
-              to="pricing"
-              spy={true}
-              smooth={true}
-              duration={1000}
-              onSetActive={() => {
+            </button>
+            <button
+              onClick={() => {
+                handleSmoothScroll("pricing");
                 setActiveLink("pricing");
               }}
               className={
@@ -85,20 +83,16 @@ export default function HeaderComponent({handleLogoClickAction} : {handleLogoCli
               }
             >
               ฟังก์ชัน
-            </LinkScroll>
+            </button>
             <Link
               className="px-4 py-2 mx-2 cursor-pointer animation-hover inline-block relative font-medium text-gray-600 hover:text-[#01BCB4] hover:font-medium transition-all duration-300"
               href="/dashboard/subscription"
             >
               แพ็กเกจ
             </Link>
-            <LinkScroll
-              activeClass="active"
-              to="testimoni"
-              spy={true}
-              smooth={true}
-              duration={1000}
-              onSetActive={() => {
+            <button
+              onClick={() => {
+                handleSmoothScroll("testimoni");
                 setActiveLink("testimoni");
               }}
               className={
@@ -110,7 +104,7 @@ export default function HeaderComponent({handleLogoClickAction} : {handleLogoCli
               }
             >
               ติดต่อเรา
-            </LinkScroll>
+            </button>
           </ul>
           <div className="col-start-10 col-end-12 font-medium flex justify-end items-center">
             <Link 
@@ -132,13 +126,9 @@ export default function HeaderComponent({handleLogoClickAction} : {handleLogoCli
       <nav className="fixed lg:hidden bottom-0 left-0 right-0 z-20 px-4 sm:px-8 shadow-t bg-white/95 backdrop-blur-md border-t border-gray-100">
         <div className="sm:px-3">
           <ul className="flex w-full justify-between items-center text-gray-600">
-            <LinkScroll
-              activeClass="active"
-              to="about"
-              spy={true}
-              smooth={true}
-              duration={1000}
-              onSetActive={() => {
+            <button
+              onClick={() => {
+                handleSmoothScroll("about");
                 setActiveLink("about");
               }}
               className={
@@ -149,14 +139,10 @@ export default function HeaderComponent({handleLogoClickAction} : {handleLogoCli
               }
             >
               หน้าหลัก
-            </LinkScroll>
-            <LinkScroll
-              activeClass="active"
-              to="pricing"
-              spy={true}
-              smooth={true}
-              duration={1000}
-              onSetActive={() => {
+            </button>
+            <button
+              onClick={() => {
+                handleSmoothScroll("pricing");
                 setActiveLink("pricing");
               }}
               className={
@@ -167,14 +153,10 @@ export default function HeaderComponent({handleLogoClickAction} : {handleLogoCli
               }
             >
               ฟังก์ชัน
-            </LinkScroll>
-            <LinkScroll
-              activeClass="active"
-              to="testimoni"
-              spy={true}
-              smooth={true}
-              duration={1000}
-              onSetActive={() => {
+            </button>
+            <button
+              onClick={() => {
+                handleSmoothScroll("testimoni");
                 setActiveLink("testimoni");
               }}
               className={
@@ -185,7 +167,7 @@ export default function HeaderComponent({handleLogoClickAction} : {handleLogoCli
               }
             >
               ติดต่อเรา
-            </LinkScroll>
+            </button>
           </ul>
         </div>
       </nav>

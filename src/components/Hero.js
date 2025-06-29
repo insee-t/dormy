@@ -1,10 +1,8 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import Image from "next/image";
 import ButtonPrimary from "./misc/ButtonPrimary";
-import { motion } from "framer-motion";
-import getScrollAnimation from "../utils/getScrollAnimation";
 import ScrollAnimationWrapper from "./Layout/ScrollAnimationWrapper";
 import ButtonOutline from "./misc/ButtonOutline.";
 
@@ -27,8 +25,6 @@ const Hero = ({
     },
   ],
 }) => {
-  const scrollAnimation = useMemo(() => getScrollAnimation(), []);
-
   return (
     <div className="w-full bg-gradient-to-br from-[#01BCB4]/20 via-[#01BCB4]/10 to-[#FFAC3E]/5 relative overflow-hidden">
       {/* Background decorative elements */}
@@ -40,16 +36,9 @@ const Hero = ({
       
       <div className="max-w-screen-xl mx-auto px-8 xl:px-16 relative z-10" id="about">
         <ScrollAnimationWrapper>
-          <motion.div
-            className="grid grid-flow-row sm:grid-flow-col grid-rows-2 md:grid-rows-1 sm:grid-cols-2 gap-8 py-6 sm:py-16"
-            variants={scrollAnimation}
-          >
+          <div className="grid grid-flow-row sm:grid-flow-col grid-rows-2 md:grid-rows-1 sm:grid-cols-2 gap-8 py-6 sm:py-16">
             <div className="flex flex-col justify-center items-start row-start-2 sm:row-start-1 pt-12">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-              >
+              <div className="animate-fade-in">
                 <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-800 leading-tight mb-6">
                   เจอเรื่องยุ่ง? <br />
                   ลอง<strong className="text-[#01BCB4]">Dormy</strong>ดู
@@ -63,16 +52,10 @@ const Hero = ({
                     ดูตัวอย่างฟรี
                   </button>
                 </div>
-              </motion.div>
+              </div>
             </div>
             <div className="flex w-full">
-              <motion.div 
-                className="h-full w-full"
-                variants={scrollAnimation}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1, delay: 0.2 }}
-              >
+              <div className="h-full w-full animate-fade-in-scale">
                 <Image
                   src="/assets/Hero-2.png"
                   alt="VPN Illustrasi"
@@ -82,9 +65,9 @@ const Hero = ({
                   layout="responsive"
                   className="drop-shadow-2xl"
                 />
-              </motion.div>
+              </div>
             </div>
-          </motion.div>
+          </div>
         </ScrollAnimationWrapper>
       </div>
     </div>

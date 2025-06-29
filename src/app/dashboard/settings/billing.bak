@@ -20,7 +20,6 @@ import { useState } from "react";
 import { Droplets, Receipt, SearchIcon, Zap } from "lucide-react";
 
 import { Button } from "@heroui/button";
-import { color } from "framer-motion";
 import SettingNav from "../../../components/settingnav";
 
 //sample data of setting of tariff rate /////////////////////////

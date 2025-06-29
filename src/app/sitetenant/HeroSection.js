@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import FeatureSite from "../../components/Feature-tenant";
 import Header from "../../components/Layout/Header";
-import { div } from "framer-motion/client";
 import Image from "next/image";
 
 const HeroSection = ({ activeTab }) => {

@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from 'next/navigation';
 import FeatureSite from "../../components/FeatureSite";
 import HeroSection from "./HeroSection";
 import Header from "../../components/Layout/Header";
 
-const FeatureLayout = () => {
+const FeatureLayoutContent = () => {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("ดูบิลออนไลน์");
 
@@ -25,6 +25,14 @@ const FeatureLayout = () => {
         <HeroSection activeTab={activeTab} />
       </div>
     </div>
+  );
+};
+
+const FeatureLayout = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <FeatureLayoutContent />
+    </Suspense>
   );
 };
 

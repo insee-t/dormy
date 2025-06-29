@@ -24,3 +24,45 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Custom animations to replace framer-motion */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.animate-fade-in-scale {
+  animation: fadeInScale 1s ease-out forwards;
+  animation-delay: 0.2s;
+}
+
+/* Stagger animation for lists */
+.animate-fade-in:nth-child(1) { animation-delay: 0ms; }
+.animate-fade-in:nth-child(2) { animation-delay: 100ms; }
+.animate-fade-in:nth-child(3) { animation-delay: 200ms; }
+.animate-fade-in:nth-child(4) { animation-delay: 300ms; }
+.animate-fade-in:nth-child(5) { animation-delay: 400ms; }
+.animate-fade-in:nth-child(6) { animation-delay: 500ms; }
+.animate-fade-in:nth-child(7) { animation-delay: 600ms; }
+.animate-fade-in:nth-child(8) { animation-delay: 700ms; }
