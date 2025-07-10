@@ -266,7 +266,7 @@ export default async function Page({ searchParams }: { searchParams: any }) {
           <p className="text-xl mb-4">คุณยังไม่มีหอพักในระบบ</p>
           <Link
             href="/dashboard/new-apartment"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-[#01BCB4] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
             สร้างหอพักใหม่
           </Link>
@@ -359,7 +359,7 @@ export default async function Page({ searchParams }: { searchParams: any }) {
           <input type="hidden" name="apartmentIndex" value={currentApartment} />
           <input type="hidden" name="selectedMonth" value={monthValue} />
           <input type="hidden" name="selectedYear" value={yearValue} />
-          <div className="rounded-lg shadow-sm m-7">
+          <div className="rounded-lg shadow-sm mx-4 my-7">
             <table className="w-full">
               <thead className="px-4 py-0.25 text-center border-x border-slate-300">
                 <tr className="border-b border-slate-300 bg-slate-200 border-x border-slate-300">

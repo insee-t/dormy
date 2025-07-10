@@ -28,7 +28,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: an
           <p className="text-xl mb-4">คุณยังไม่มีหอพักในระบบ</p>
           <a
             href="/dashboard/new-apartment"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-[#01BCB4] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
             สร้างหอพักใหม่
           </a>
@@ -88,6 +88,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: an
 
   return (
     <App title="ผังห้อง" userName={currentUser.name}>
+      <div className="bg-white min-h-screen shadow-md rounded-xl">
       <div className="flex flex-col gap-2 bg-slate-50 rounded-xl shadow-sm px-6 py-4 mb-4 items-center md:flex-row md:justify-between md:items-center">
         <ApartmentSelectForm 
           apartments={apartments as any} 
@@ -98,6 +99,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: an
         roomsWithStatus={roomsWithStatus}
         summaryData={summaryData}
       />
+      </div>
     </App>
   );
 }

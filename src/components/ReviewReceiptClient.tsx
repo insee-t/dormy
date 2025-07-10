@@ -155,11 +155,11 @@ export default function ReviewReceiptClient({ paymentStatements }: ReviewReceipt
   }
 
   return (
-      <div className="min-h-screen  bg-white p-6 space-y-6 shadow-md rounded-lg">
+      <div className="min-h-screen  bg-white px-4 py-6 space-y-6 shadow-md rounded-lg">
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 ">
-          <Card className="shadow-md">
+          <Card className="shadow-md border-slate-300">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">ยอดที่คาดว่าจะได้รับทั้งหมด</CardTitle>
               <DollarSign className="h-4 w-4 text-muted-foreground" />
@@ -170,7 +170,7 @@ export default function ReviewReceiptClient({ paymentStatements }: ReviewReceipt
             </CardContent>
           </Card>
 
-          <Card className="shadow-md">
+          <Card className="shadow-md border-slate-300">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">ยอดที่เก็บได้</CardTitle>
               <CheckCircle className="h-4 w-4 text-[#00bf63]" />
@@ -183,7 +183,7 @@ export default function ReviewReceiptClient({ paymentStatements }: ReviewReceipt
             </CardContent>
           </Card>
 
-          <Card className="shadow-md">
+          <Card className="shadow-md border-slate-300">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">ค้างชำระ</CardTitle>
               <Clock className="h-4 w-4 text-[#ff5757]" />
@@ -196,7 +196,7 @@ export default function ReviewReceiptClient({ paymentStatements }: ReviewReceipt
             </CardContent>
           </Card>
 
-          <Card className="shadow-md">
+          <Card className="shadow-md border-slate-300">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">ชำระเงินแล้ว</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
@@ -209,7 +209,7 @@ export default function ReviewReceiptClient({ paymentStatements }: ReviewReceipt
         </div>
 
         {/* Filters and Search */}
-        <Card className="shadow-md">
+        <Card className="shadow-md border-slate-300">
           <CardHeader>
             <CardTitle>รายการชำระเงินพร้อมหลักฐานจากธนาคาร</CardTitle>
             <CardDescription>ตรวจสอบการชำระค่าเช่าและรายการจากแอปธนาคารของผู้เช่า</CardDescription>
@@ -223,7 +223,7 @@ export default function ReviewReceiptClient({ paymentStatements }: ReviewReceipt
                   <Input
                     id="search"
                     placeholder="ค้นหาโดยชื่อนผู้เช่า หน่วย หรือ รหัสรายการ ..."
-                    className="pl-10"
+                    className="pl-10 border-slate-300"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
@@ -232,7 +232,7 @@ export default function ReviewReceiptClient({ paymentStatements }: ReviewReceipt
               <div className="w-full sm:w-48">
                 <Label htmlFor="status">สถานะ</Label>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger>
+                  <SelectTrigger className=" border-slate-300">
                     <SelectValue placeholder="Filter by status" />
                   </SelectTrigger>
                   <SelectContent className="bg-white">
@@ -262,7 +262,7 @@ export default function ReviewReceiptClient({ paymentStatements }: ReviewReceipt
             )}
 
             {/* Statements Table */}
-            <div className="rounded-md border">
+            <div className="rounded-md border border-slate-300">
               <Table>
                 <TableHeader>
                   <TableRow>

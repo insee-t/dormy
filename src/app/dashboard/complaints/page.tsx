@@ -82,7 +82,7 @@ export default async function ComplaintsPage({ searchParams }: { searchParams: P
           <p className="text-xl mb-4">คุณยังไม่มีหอพักในระบบ</p>
           <a
             href="/dashboard/new-apartment"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-[#01BCB4] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
             สร้างหอพักใหม่
           </a>
@@ -106,56 +106,58 @@ export default async function ComplaintsPage({ searchParams }: { searchParams: P
 
   return (
     <App title="ร้องเรียน" userName={currentUser.name}>
-    <div className="bg-white min-h-screen mb-28 p-4">
-      <div className="mb-4">
+    <div className="bg-white min-h-screen rounded-2xl shadow-md">
+      <div className="flex flex-col gap-2 bg-slate-50 rounded-xl shadow-sm px-6 py-4 mb-4 items-center md:flex-row md:justify-between md:items-center">
         <ApartmentSelectForm apartments={apartments} currentApartment={selectedApartmentIdx} />
       </div>
       {/* Summary cards */}
-      <div className="mt-3 flex p-3 items-center justify-between gap-4">
-        <div className="py-3 px-8 flex bg-blue-400 w-full rounded-lg items-center justify-center gap-10">
-          <div className="flex flex-col text-xl text-white">
-            <div className="whitespace-nowrap">รายการทั้งหมด</div>
-            <div className="flex gap-2 items-baseline whitespace-nowrap"><p className="text-3xl font-bold text-white">{total}</p> รายการ</div>
-            <div className="flex gap-1 text-sm items-center"><CircleCheck className="bg-green-400 rounded-full size-fit" /> สถานะปัจจุบัน</div>
+      <div className="mt-3 p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="py-3 px-6 flex bg-[#01BCB4] rounded-lg items-center justify-center gap-4">
+            <div className="flex flex-col text-lg text-white">
+              <div className="whitespace-nowrap">รายการทั้งหมด</div>
+              <div className="flex gap-2 items-baseline whitespace-nowrap"><p className="text-2xl font-bold text-white">{total}</p> รายการ</div>
+              <div className="flex gap-1 text-sm items-center"><CircleCheck className="bg-green-400 rounded-full size-fit" /> สถานะปัจจุบัน</div>
+            </div>
+            <div className="text-[#3491b4] bg-[#EEEFF2] p-2 rounded-lg">
+              <BookOpen className="w-6 h-6" />
+            </div>
           </div>
-          <div className="text-[#3491b4] bg-[#EEEFF2] p-2 rounded-lg">
-            <BookOpen className="w-8 h-8" />
+          <div className="py-3 px-6 flex bg-[#2FAB73] rounded-lg items-center justify-center gap-4">
+            <div className="flex flex-col text-lg text-white">
+              <div className="whitespace-nowrap">ดำเนินการเรียบร้อย</div>
+              <div className="flex gap-2 items-baseline whitespace-nowrap"><p className="text-2xl font-bold text-white">{complete}</p> รายการ</div>
+              <div className="flex gap-1 text-sm items-center"><CircleCheck className="bg-green-400 rounded-full size-fit" /> สถานะปัจจุบัน</div>
+            </div>
+            <div className="text-[#2FAB73] bg-[#EEEFF2] p-2 rounded-lg">
+              <CircleCheck className="w-6 h-6" />
+            </div>
           </div>
-        </div>
-        <div className="py-3 px-8 flex bg-[#2FAB73] w-full rounded-lg items-center justify-center gap-8">
-          <div className="flex flex-col text-xl text-white">
-            <div className="whitespace-nowrap">ดำเนินการเรียบร้อย</div>
-            <div className="flex gap-2 items-baseline"><p className="text-3xl font-bold text-white">{complete}</p> รายการ</div>
-            <div className="flex gap-1 text-sm items-center"><CircleCheck className="bg-green-400 rounded-full size-fit" /> สถานะปัจจุบัน</div>
+          <div className="py-3 px-6 flex bg-yellow-400 rounded-lg items-center justify-center gap-4">
+            <div className="flex flex-col text-lg text-white">
+              <div className="whitespace-nowrap">กำลังดำเนินการ</div>
+              <div className="flex gap-2 items-baseline whitespace-nowrap"><p className="text-2xl font-bold text-white">{inProgress}</p> รายการ</div>
+              <div className="flex gap-1 text-sm items-center"><CircleCheck className="bg-green-400 rounded-full size-fit" /> สถานะปัจจุบัน</div>
+            </div>
+            <div className="text-yellow-500 bg-[#EEEFF2] p-2 rounded-lg">
+              <Clock5 className="w-6 h-6" />
+            </div>
           </div>
-          <div className="text-[#2FAB73] bg-[#EEEFF2] p-2 rounded-lg">
-            <CircleCheck className="w-8 h-8" />
-          </div>
-        </div>
-        <div className="py-3 px-8 flex bg-yellow-400 w-full rounded-lg items-center justify-center gap-10">
-          <div className="flex flex-col text-xl text-white">
-            <div className="whitespace-nowrap">กำลังดำเนินการ</div>
-            <div className="flex gap-2 items-baseline"><p className="text-3xl font-bold text-white">{inProgress}</p> รายการ</div>
-            <div className="flex gap-1 text-sm items-center"><CircleCheck className="bg-green-400 rounded-full size-fit" /> สถานะปัจจุบัน</div>
-          </div>
-          <div className="text-yellow-500 bg-[#EEEFF2] p-2 rounded-lg">
-            <Clock5 className="w-8 h-8" />
-          </div>
-        </div>
-        <div className="py-3 px-8 flex bg-red-400 w-full rounded-lg items-center justify-center gap-10">
-          <div className="flex flex-col text-xl text-white">
-            <div className="whitespace-nowrap">รอวัสดุ อุปกรณ์</div>
-            <div className="flex gap-2 items-baseline"><p className="text-3xl font-bold text-white">{waiting}</p> รายการ</div>
-            <div className="flex gap-1 text-sm items-center"><CircleCheck className="bg-green-400 rounded-full size-fit" /> สถานะปัจจุบัน</div>
-          </div>
-          <div className="text-[#ff5757] bg-[#EEEFF2] p-2 rounded-lg">
-            <CircleX className="w-8 h-8" />
+          <div className="py-3 px-6 flex bg-red-400 rounded-lg items-center justify-center gap-4">
+            <div className="flex flex-col text-lg text-white">
+              <div className="whitespace-nowrap">รอวัสดุ อุปกรณ์</div>
+              <div className="flex gap-2 items-baseline whitespace-nowrap"><p className="text-2xl font-bold text-white">{waiting}</p> รายการ</div>
+              <div className="flex gap-1 text-sm items-center"><CircleCheck className="bg-green-400 rounded-full size-fit" /> สถานะปัจจุบัน</div>
+            </div>
+            <div className="text-[#ff5757] bg-[#EEEFF2] p-2 rounded-lg">
+              <CircleX className="w-6 h-6" />
+            </div>
           </div>
         </div>
       </div>
 
       {/* Complaints Table */}
-      <div className="mt-10 shadow w-full bg-white p-1">
+      <div className="mt-10 shadow w-full bg-white p-4">
         <ComplaintsTable complaints={complaints} />
       </div>
     </div>

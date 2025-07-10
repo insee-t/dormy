@@ -140,7 +140,7 @@ export default function ComplaintsTable({ complaints }: { complaints: Complaint[
       case "complete":
         return "bg-[#2FAB73] hover:bg-[#2FAB73]/80 text-white";
       case "in_progress":
-        return "bg-blue-500 hover:bg-blue-600 text-white";
+        return "bg-[#01BCB4] hover:bg-blue-600 text-white";
       case "waiting_for_inventory":
         return "bg-red-500 hover:bg-red-600 text-white";
       default:
@@ -153,7 +153,7 @@ export default function ComplaintsTable({ complaints }: { complaints: Complaint[
       <div className="flex gap-2 mb-2 items-center">
         <ChartNoAxesColumn />
         <input
-          className="border-2 p-1 rounded w-64"
+          className="border border-slate-300 p-1 rounded w-64"
           placeholder="ค้นหา..."
           value={search}
           onChange={handleSearch}
@@ -161,7 +161,7 @@ export default function ComplaintsTable({ complaints }: { complaints: Complaint[
         <span className="text-sm text-gray-500">{sorted.length} รายการ</span>
       </div>
       <table className="w-full mt-1 shadow">
-        <thead className="bg-blue-400 text-white">
+        <thead className="bg-[#01BCB4] text-white">
           <tr>
             <th className="w-24 p-2 tracking-wide text-left cursor-pointer" onClick={() => handleSort("id")}>ลำดับที่</th>
             <th className="p-2 tracking-wide text-left cursor-pointer" onClick={() => handleSort("createdAt")}>ประทับเวลา</th>

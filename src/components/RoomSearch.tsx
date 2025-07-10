@@ -20,7 +20,7 @@ export default function RoomSearch({ onSearch, onFilter, onSettings }: RoomSearc
   };
 
   return (
-    <div className="flex gap-4 mb-6 bg-white rounded-xl">
+    <div className="flex gap-4 mb-6 bg-white rounded-xl px-4">
       <Input
         className="flex-1"
         placeholder="ค้นหาตามหมายเลขห้อง"

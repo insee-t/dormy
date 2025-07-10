@@ -64,7 +64,7 @@ export default async function Page({
           <p className="text-xl mb-4">คุณยังไม่มีหอพักในระบบ</p>
           <a
             href="/dashboard/new-apartment"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-[#01BCB4] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
             สร้างหอพักใหม่
           </a>
@@ -128,12 +128,12 @@ export default async function Page({
   return (
     <HeroUIProvider>
       <App title="พัสดุ" userName={currentUser.name}>
-        <div className="max-w-6xl mx-auto p-6 bg-white rounded-md">
-          <div className="mb-4">
+        <div className="min-h-screen bg-white rounded-2xl shadow-md">
+          <div className="flex flex-col gap-2 bg-slate-50 rounded-xl shadow-sm px-6 py-4 mb-4 items-center md:flex-row md:justify-between md:items-center">
             <ApartmentSelectForm apartments={apartments as any} currentApartment={currentApartment} />
           </div>
           <div className="content-center">
-            <div className="flex-auto w-full h-auto shadow-md p-3 rounded-md mb-2">
+            <div className="flex-auto w-full h-auto shadow-md p-4 rounded-md mb-2">
               <PackageFilterButtons filter={filter} apartment={currentApartment} />
               <div className="sm:inline flex gap-4 mb-6">
                 <div className="flex mt-3 gap-4 w-full items-center">

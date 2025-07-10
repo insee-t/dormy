@@ -11,7 +11,8 @@ export default async function Home() {
   const currentUser = await getCurrentUser({
     redirectIfNotFound: false
   })
-  if (currentUser !== null) redirect("/dashboard")
+  if (currentUser !== null && currentUser.role === "admin") redirect("/dashboard")
+  if (currentUser !== null && currentUser.role === "user") redirect("/tenant/dashboard")
 
   return (
     <>

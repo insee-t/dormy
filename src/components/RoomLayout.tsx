@@ -108,7 +108,7 @@ export default function RoomLayout({ roomsWithStatus, summaryData }: RoomLayoutP
   return (
     <div className="w-full">
       {/* สรุปข้อมูลห้องพัก */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 px-4">
         {summaryData.map((item, index) => (
           <div
             key={index}
@@ -135,10 +135,10 @@ export default function RoomLayout({ roomsWithStatus, summaryData }: RoomLayoutP
       />
 
       {/* แสดงห้องพักแต่ละชั้น */}
-      <div className="space-y-6">
+      <div className="space-y-6 px-4">
         {Object.entries(floorData).map(([floor, rooms]) => (
           <div key={floor} className="bg-white rounded-lg shadow w-full">
-            <div className="p-4 bg-[#018c98] text-white rounded-t-lg">
+            <div className="p-4 bg-[#01BCB4] text-white rounded-t-lg">
               ชั้นที่ {floor}
             </div>
             <div className="flex gap-6 p-6 overflow-x-auto">
