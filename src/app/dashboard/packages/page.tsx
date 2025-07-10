@@ -57,7 +57,23 @@ export default async function Page({
 
   let tenants: { id: string, name: string, roomNumber: string }[] = [];
   let packages: any[] = [];
-  if (!apartments[currentApartment].id) return null;
+  if (!apartments[currentApartment].id) {
+    return (
+      <App title="ผังห้อง" userName={currentUser.name}>
+        <div className="flex flex-col items-center justify-center h-full p-10">
+          <p className="text-xl mb-4">คุณยังไม่มีหอพักในระบบ</p>
+          <a
+            href="/dashboard/new-apartment"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            สร้างหอพักใหม่
+          </a>
+        </div>
+      </App>
+    );
+  }
+
+
   const apartmentId = apartments[currentApartment].id as number;
 
   // Get packages directly for this apartment

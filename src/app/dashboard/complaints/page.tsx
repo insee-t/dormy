@@ -75,7 +75,22 @@ export default async function ComplaintsPage({ searchParams }: { searchParams: P
   // Filter out apartments with null id, name, or address
   const apartments = (apartmentsRaw || []).filter(a => a.id !== null && a.name !== null && a.address !== null)
     .map(a => ({ id: a.id as number, name: a.name as string, address: a.address as string }));
-  if (!apartments || apartments.length === 0) return notFound();
+  if (!apartments || apartments.length === 0) {
+    return (
+      <App title="ผังห้อง" userName={currentUser.name}>
+        <div className="flex flex-col items-center justify-center h-full p-10">
+          <p className="text-xl mb-4">คุณยังไม่มีหอพักในระบบ</p>
+          <a
+            href="/dashboard/new-apartment"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            สร้างหอพักใหม่
+          </a>
+        </div>
+      </App>
+    );
+  }
+
   
   const resolvedSearchParams = await searchParams;
   let selectedApartmentIdx = Number(resolvedSearchParams?.apartment) || 0;
