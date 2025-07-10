@@ -2,14 +2,13 @@
 
 import React from "react";
 import { Avatar, Button, ScrollShadow, Spacer, Tooltip } from "@heroui/react";
-import { Icon } from "@iconify/react";
 import { useMediaQuery } from "usehooks-ts";
 import { cn } from "@heroui/react";
 import { useRouter } from "next/navigation";
-import { LogOut } from "lucide-react";
+import { LogOut, Info, MinusCircle, PanelLeftClose, Clock } from "lucide-react";
 
 import { AcmeIcon } from "./acme";
-import { sectionItemsWithTeams } from "./sidebar-items";
+import { sectionItemsWithTeams } from "./sidebar-items.tsx";
 import Sidebar from "./sidebar";
 import { logOut } from "@/auth/nextjs/actions";
 
@@ -81,7 +80,7 @@ export default function Component({ children, title = "Overview", userName }) {
             <Button
               fullWidth
               className={cn(
-                "justify-start truncate text-default-500 data-[hover=true]:text-foreground ",
+                "justify-start truncate text-blue-500 data-[hover=true]:text-foreground",
                 {
                   "justify-center": isCompact,
                 },
@@ -89,20 +88,18 @@ export default function Component({ children, title = "Overview", userName }) {
               isIconOnly={isCompact}
               startContent={
                 isCompact ? null : (
-                  <Icon
-                    className="flex-none text-default-500 bg"
-                    icon="solar:info-circle-line-duotone"
-                    width={24}
+                  <Info
+                    className="flex-none text-blue-500"
+                    size={24}
                   />
                 )
               }
               variant="light"
             >
               {isCompact ? (
-                <Icon
-                  className="text-default-500"
-                  icon="solar:info-circle-line-duotone"
-                  width={24}
+                <Info
+                  className="text-blue-500"
+                  size={24}
                 />
               ) : (
                 "Help & Information"
@@ -112,7 +109,7 @@ export default function Component({ children, title = "Overview", userName }) {
           <Tooltip content="Log Out" isDisabled={!isCompact} placement="right">
             <Button
               className={cn(
-                "justify-start text-default-500 data-[hover=true]:text-foreground",
+                "justify-start text-blue-500 data-[hover=true]:text-foreground",
                 {
                   "justify-center": isCompact,
                 },
@@ -121,20 +118,18 @@ export default function Component({ children, title = "Overview", userName }) {
               onPress={handleLogout}
               startContent={
                 isCompact ? null : (
-                  <Icon
-                    className="flex-none rotate-180 text-default-500"
-                    icon="solar:minus-circle-line-duotone"
-                    width={24}
+                  <LogOut
+                    className="flex-none text-blue-500"
+                    size={24}
                   />
                 )
               }
               variant="light"
             >
               {isCompact ? (
-                <Icon
-                  className="rotate-180 text-default-500"
-                  icon="solar:minus-circle-line-duotone"
-                  width={24}
+                <LogOut
+                  className="text-blue-500"
+                  size={24}
                 />
               ) : (
                 "Log Out"
@@ -156,11 +151,9 @@ export default function Component({ children, title = "Overview", userName }) {
           {/* Left Section */}
           <div className="flex items-center gap-3">
             <Button isIconOnly size="sm" variant="light" onPress={onToggle}>
-              <Icon
-                className="text-default-500"
-                height={24}
-                icon="solar:sidebar-minimalistic-outline"
-                width={24}
+              <PanelLeftClose
+                className="text-blue-500"
+                size={24}
                 color="#01BCB4"
               />
             </Button>
@@ -171,10 +164,9 @@ export default function Component({ children, title = "Overview", userName }) {
 
           <div className="flex items-center gap-4">
             <div className="bg-blue-50 px-3 py-1 rounded-full flex items-center">
-              <Icon
+              <Clock
                 className="text-#3491b4 mr-2"
-                icon="solar:clock-circle-outline"
-                width={20}
+                size={20}
                 color="white"
               />
               <span className="text-sm text-#4F5665 hidden sm:block">

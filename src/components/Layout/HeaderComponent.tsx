@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from 'next/image';
 import Link from "next/link";
-import LogoVPN from "/public/assets/Logo.png";
+import LogoVPN from "/public/assets/icon.png";
 
 export default function HeaderComponent({handleLogoClickAction} : {handleLogoClickAction: () => void}) {
   const [activeLink, setActiveLink] = useState<string | null>(null);
@@ -40,7 +40,7 @@ export default function HeaderComponent({handleLogoClickAction} : {handleLogoCli
             )
         }
       >
-        <nav className="max-w-screen-xl px-6 sm:px-8 lg:px-16 mx-auto grid grid-flow-col py-3 sm:py-4">
+        <nav className="max-w-screen-xl px-6 sm:px-8 lg:px-16 mx-auto grid grid-flow-col py-2">
           <div
             onClick={handleLogoClickAction}
             className="cursor-pointer transform hover:scale-105 transition-transform duration-200"
@@ -48,7 +48,7 @@ export default function HeaderComponent({handleLogoClickAction} : {handleLogoCli
             <Image
               src={LogoVPN}
               alt="Logo VPN"
-              width={200}
+              width={50}
               height={50}
               className="object-contain"
             />

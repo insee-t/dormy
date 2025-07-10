@@ -5,10 +5,11 @@ import { eq, and, isNull, isNotNull } from "drizzle-orm"
 import ReviewReceiptClient from "@/components/ReviewReceiptClient"
 import App from "@/components/Sidebar/App";
 
-async function getPaymentStatements() {
+async function getPaymentStatements(userId: string) {
   try {
-    // Get all payment plans with their associated data
+    // Get payment plans for the current user with their associated data
     const paymentPlans = await db.query.PaymentPlanTable.findMany({
+      where: eq(PaymentPlanTable.userId, userId),
       with: {
         room: {
           with: {
@@ -66,8 +67,8 @@ async function getPaymentStatements() {
 export default async function ReviewReceiptPage() {
   const currentUser = await getCurrentUser({ withFullUser: true, redirectIfNotFound: true })
   
-  // Fetch payment statements from database
-  const paymentStatements = await getPaymentStatements()
+  // Fetch payment statements from database for the current user
+  const paymentStatements = await getPaymentStatements(currentUser.id)
 
   return <App title="ตรวจสอบใบเสร็จ" userName={currentUser.name}>
     <ReviewReceiptClient paymentStatements={paymentStatements} />

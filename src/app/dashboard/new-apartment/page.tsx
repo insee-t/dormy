@@ -64,7 +64,7 @@ export default async function NewApartmentPage() {
 
   return (
     <App title="สร้างหอพักใหม่" userName={currentUser.name}>
-      <div className="bg-white h-screen shadow-md rounded-2xl p-8">
+      <div className="bg-white shadow-md rounded-2xl p-8 h-fit">
         <div className="max-w-2xl mx-auto">
           <h1 className="text-2xl font-bold mb-6 text-gray-800">สร้างหอพักใหม่</h1>
           

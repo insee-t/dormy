@@ -235,7 +235,7 @@ export default function ReviewReceiptClient({ paymentStatements }: ReviewReceipt
                   <SelectTrigger>
                     <SelectValue placeholder="Filter by status" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white">
                     <SelectItem value="all">ทั้งหมด</SelectItem>
                     <SelectItem value="paid">ชำระแล้ว</SelectItem>
                     <SelectItem value="pending">รอดำเนินการ</SelectItem>
@@ -467,7 +467,7 @@ export default function ReviewReceiptClient({ paymentStatements }: ReviewReceipt
 
             {filteredStatements.length === 0 && (
               <div className="text-center py-8">
-                <p className="text-muted-foreground">No payment statements found matching your criteria.</p>
+                <p className="text-muted-foreground">ไม่พบรายการใบเสร็จที่ตรงกับเงื่อนไขของคุณ</p>
               </div>
             )}
           </CardContent>

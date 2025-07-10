@@ -1,6 +1,85 @@
-import { Icon } from "@iconify/react";
+import { Bell, CreditCard, HomeIcon } from "lucide-react";
 import { SidebarItemType } from "./sidebar";
+import Image from "next/image";
+import layoutIcon from "/public/assets/icon/layout.png"
+import billIcon from "/public/assets/icon/bill.png"
+import meterIcon from "/public/assets/icon/meter.png"
+import summaryIcon from "/public/assets/icon/summary.png"
+import packageIcon from "/public/assets/icon/packages.png"
+import contractIcon from "/public/assets/icon/contract.png"
+import complaintIcon from "/public/assets/icon/complaint.png"
 
+const LayoutIcon = () => (
+  <img 
+    src={layoutIcon.src} 
+    alt="Layout" 
+    width={24} 
+    height={24}
+    className="text-default-500 group-data-[selected=true]:text-foreground"
+  />
+);
+
+const BillIcon = () => (
+  <img 
+    src={billIcon.src} 
+    alt="Bill" 
+    width={24} 
+    height={24}
+    className="text-default-500 group-data-[selected=true]:text-foreground"
+  />
+);
+
+const MeterIcon = () => (
+  <img 
+    src={meterIcon.src} 
+    alt="Meter" 
+    width={24} 
+    height={24}
+    className="text-default-500 group-data-[selected=true]:text-foreground"
+  />
+);
+
+const SummaryIcon = () => (
+  <img 
+    src={summaryIcon.src} 
+    alt="Summary" 
+    width={24} 
+    height={24}
+    className="text-default-500 group-data-[selected=true]:text-foreground"
+  />
+);
+
+const PackageIcon = () => (
+  <img 
+    src={packageIcon.src} 
+    alt="Review Reciept" 
+    width={24} 
+    height={24}
+    className="text-default-500 group-data-[selected=true]:text-foreground"
+  />
+);
+
+const ContractIcon = () => (
+  <img 
+    src={contractIcon.src} 
+    alt="Lease" 
+    width={24} 
+    height={24}
+    className="text-default-500 group-data-[selected=true]:text-foreground"
+  />
+);
+
+const ComplaintIcon = () => (
+  <img 
+    src={complaintIcon.src} 
+    alt="Layout" 
+    width={24} 
+    height={24}
+    className="text-default-500 group-data-[selected=true]:text-foreground"
+  />
+);
+
+ 
 export const sectionItemsWithTeams = [
   {
     key: "main",
@@ -9,25 +88,25 @@ export const sectionItemsWithTeams = [
       {
         key: "room_layout",
         href: "/dashboard",
-        icon: "solar:buildings-2-outline",
+        startContent: <LayoutIcon />,
         title: "ผังห้อง",
       },
       {
         key: "rent_bill",
         href: "/dashboard/rent-bill",
-        icon: "solar:bill-list-outline",
+        startContent: <BillIcon />,
         title: "บิลค่าเช่า",
       },
       {
         key: "meter",
         href: "/dashboard/meter",
-        icon: "solar:battery-charge-outline",
+        startContent: <MeterIcon />,
         title: "ค่าน้ำ ค่าไฟ",
       },
       {
         key: "review_receipt",
         href: "/dashboard/review-reciept",
-        icon: "solar:clipboard-text-outline",
+        startContent: <SummaryIcon />,
         title: "ตรวจสอบใบเสร็จ",
       },
       // {
@@ -45,31 +124,31 @@ export const sectionItemsWithTeams = [
       {
         key: "packages",
         href: "/dashboard/packages",
-        icon: "solar:box-outline",
+        startContent: <PackageIcon />,
         title: "พัสดุ",
       },
       {
         key: "reports",
         href: "/dashboard/complaints",
-        icon: "solar:bell-outline",
+        startContent: <Bell size={24} className="text-default-500 group-data-[selected=true]:text-foreground" />,
         title: "ร้องเรียน",
       },
       {
         key: "bank",
         href: "/dashboard/bank",
-        icon: "solar:card-outline",
+        startContent: <CreditCard size={24} className="text-default-500 group-data-[selected=true]:text-foreground" />,
         title: "บัญชีธนาคาร",
       },
       {
         key: "lease",
         href: "/dashboard/lease",
-        icon: "solar:document-outline",
+        startContent: <ContractIcon />,
         title: "สัญญาเช่า",
       },
       {
         key: "new_apartment",
         href: "/dashboard/new-apartment",
-        icon: "solar:home-add-outline",
+        startContent: <HomeIcon size={24} className="text-default-500 group-data-[selected=true]:text-foreground" />,
         title: "เพิ่มหอพัก",
       },
     // ]

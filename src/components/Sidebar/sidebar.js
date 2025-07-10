@@ -61,9 +61,12 @@ const Sidebar = React.forwardRef(
           delete item.href;
         }
 
+        // Destructure icon from item to prevent it from being passed to DOM
+        const { icon, ...itemWithoutIcon } = item;
+        
         return (
           <ListboxItem
-            {...item}
+            {...itemWithoutIcon}
             key={item.key}
             classNames={{
               base: cn(
@@ -174,9 +177,12 @@ const Sidebar = React.forwardRef(
           return renderNestItem(item);
         }
 
+        // Destructure icon from item to prevent it from being passed to DOM
+        const { icon, ...itemWithoutIcon } = item;
+        
         return (
           <ListboxItem
-            {...item}
+            {...itemWithoutIcon}
             key={item.key}
             endContent={isCompact || hideEndContent ? null : item.endContent ?? null}
             startContent={

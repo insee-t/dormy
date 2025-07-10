@@ -131,3 +131,7 @@ people are dumb they may insert meter incorrect in the prev Month
 # Change all linkco to dormy.
 
 # require user to enter real thai name (no last name).
+
+# DONE current flow are wrong. payment plan should be static. and rent are monthly.
+
+# nav bar reload

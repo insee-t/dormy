@@ -86,20 +86,20 @@ export default function TestReceiptManagementPage() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-xs text-gray-600">
-                      - อัปเดตสถานะใบเสร็จเป็น "approved"
-                      - สร้างรายการชำระเงินใหม่ในตาราง rents
-                      - อัปเดตสถานะการชำระเงินเป็น "paid"
+                      - อัปเดตสถานะบิลเป็น "อนุมัติการชำระเงิน"
+                      - สร้างรายการชำระเงินใหม่ในตาราง บิล
+                      - อัปเดตสถานะการชำระเงินเป็น "จ่ายแล้ว"
                     </p>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-sm">ขอคำชี้แจง</CardTitle>
+                    <CardTitle className="text-sm">ขอใบเสร็จใหม่</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-xs text-gray-600">
-                      - อัปเดตสถานะใบเสร็จเป็น "clarification_requested"
+                      - อัปเดตสถานะบิลเป็น "ขอใบเสร็จใหม่"
                       - ส่งการแจ้งเตือนไปยังผู้เช่า
                       - รอการตอบกลับจากผู้เช่า
                     </p>
@@ -112,9 +112,9 @@ export default function TestReceiptManagementPage() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-xs text-gray-600">
-                      - อัปเดตสถานะใบเสร็จเป็น "rejected"
+                      - อัปเดตสถานะบิลเป็น "rejected"
                       - ส่งการแจ้งเตือนไปยังผู้เช่า
-                      - ต้องอัปโหลดใบเสร็จใหม่
+                      - ต้องอัปโหลดบิลใหม่
                     </p>
                   </CardContent>
                 </Card>

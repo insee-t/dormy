@@ -54,33 +54,62 @@ async function saveRentBills(formData: FormData) {
           tenant: true
         }
       });
-      if (!paymentPlan) continue;
       
-      // Check if a rent record exists for this month
-      const existingRent = await db.query.RentTable.findFirst({
-        where: (table, { and, eq, gte, lt }) =>
-          and(
-            eq(table.paymentPlanId, paymentPlan.id),
-            gte(table.createdAt, monthStart),
-            lt(table.createdAt, monthEnd)
-          ),
-      });
-      if (existingRent) {
-        await db.update(RentTable)
+      // If payment plan exists, update it
+      if (paymentPlan) {
+        await db.update(PaymentPlanTable)
           .set({ 
             fee: rentValue, 
             updatedAt: now 
           })
-          .where(eq(RentTable.id, existingRent.id));
-      } else {
-        await db.insert(RentTable).values({
-          paymentPlanId: paymentPlan.id,
-          fee: rentValue,
-          paid: false,
-          late: false,
-          createdAt: monthStart,
-          updatedAt: now,
+          .where(eq(PaymentPlanTable.id, paymentPlan.id));
+        
+        // Check if a rent record exists for this month
+        const existingRent = await db.query.RentTable.findFirst({
+          where: (table, { and, eq, gte, lt }) =>
+            and(
+              eq(table.paymentPlanId, paymentPlan.id),
+              gte(table.createdAt, monthStart),
+              lt(table.createdAt, monthEnd)
+            ),
         });
+        if (existingRent) {
+          await db.update(RentTable)
+            .set({ 
+              fee: rentValue, 
+              updatedAt: now 
+            })
+            .where(eq(RentTable.id, existingRent.id));
+        } else {
+          await db.insert(RentTable).values({
+            paymentPlanId: paymentPlan.id,
+            fee: rentValue,
+            paid: false,
+            late: false,
+            createdAt: monthStart,
+            updatedAt: now,
+          });
+        }
+      } else {
+        // Create a new payment plan for this room if it doesn't exist
+        const newPaymentPlan = await db.insert(PaymentPlanTable).values({
+          roomId: parseInt(roomId),
+          fee: rentValue,
+          createdAt: now,
+          updatedAt: now,
+        }).returning();
+        
+        if (newPaymentPlan[0]) {
+          // Create rent record for the new payment plan
+          await db.insert(RentTable).values({
+            paymentPlanId: newPaymentPlan[0].id,
+            fee: rentValue,
+            paid: false,
+            late: false,
+            createdAt: monthStart,
+            updatedAt: now,
+          });
+        }
       }
     }
     redirect("/dashboard/rent-bill");
@@ -97,10 +126,19 @@ async function sendAllBillsAction(formData: FormData) {
   try {
     const currentUser = await getCurrentUser({ withFullUser: true, redirectIfNotFound: true });
     const now = new Date();
-    const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-    const nextMonthStart = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-    const prevMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-    const prevMonthEnd = new Date(now.getFullYear(), now.getMonth(), 1);
+    const selectedMonth = formData.get("selectedMonth")?.toString();
+    const selectedYear = formData.get("selectedYear")?.toString();
+    
+    if (!selectedMonth || !selectedYear) {
+      console.error("Missing month/year");
+      return;
+    }
+    
+    // Calculate the start and end of the selected month
+    const year = parseInt(selectedYear) - 543; // Thai year to Gregorian
+    const month = parseInt(selectedMonth) - 1;
+    const selectedMonthStart = new Date(year, month, 1);
+    const selectedMonthEnd = new Date(year, month + 1, 1);
     
     // Get apartment ID from form data
     const apartmentIndex = formData.get("apartmentIndex")?.toString();
@@ -117,7 +155,7 @@ async function sendAllBillsAction(formData: FormData) {
     }
     
     // Get all rooms with their tenants and payment plans
-    const roomsData = await getRooms(currentApartmentId, now);
+    const roomsData = await getRooms(currentApartmentId, now, selectedMonth, selectedYear);
     
     for (const floor of roomsData) {
       for (const room of floor.rooms) {
@@ -129,31 +167,16 @@ async function sendAllBillsAction(formData: FormData) {
         const userId = room.paymentPlan.tenant.id;
         const paymentPlanId = room.paymentPlan.id;
         
-        // Update current month rent records with userId
-        const currentMonthRents = await db.query.RentTable.findMany({
+        // Update selected month rent records with userId
+        const selectedMonthRents = await db.query.RentTable.findMany({
           where: (table, { and, eq, gte, lt, isNull }) => and(
             eq(table.paymentPlanId, paymentPlanId),
-            gte(table.createdAt, currentMonthStart),
-            lt(table.createdAt, nextMonthStart),
+            gte(table.createdAt, selectedMonthStart),
+            lt(table.createdAt, selectedMonthEnd),
             isNull(table.userId)
           )
         });
-        for (const rentRecord of currentMonthRents) {
-          await db.update(RentTable)
-            .set({ userId: userId })
-            .where(eq(RentTable.id, rentRecord.id));
-        }
-        
-        // Update previous month rent records with userId
-        const prevMonthRents = await db.query.RentTable.findMany({
-          where: (table, { and, eq, gte, lt, isNull }) => and(
-            eq(table.paymentPlanId, paymentPlanId),
-            gte(table.createdAt, prevMonthStart),
-            lt(table.createdAt, prevMonthEnd),
-            isNull(table.userId)
-          )
-        });
-        for (const rentRecord of prevMonthRents) {
+        for (const rentRecord of selectedMonthRents) {
           await db.update(RentTable)
             .set({ userId: userId })
             .where(eq(RentTable.id, rentRecord.id));
@@ -170,7 +193,18 @@ async function sendAllBillsAction(formData: FormData) {
 }
 
 // Fetch all rooms for the selected apartment, grouped by floor
-async function getRooms(apartment: number, now: Date) {
+async function getRooms(apartment: number, now: Date, selectedMonth?: string, selectedYear?: string) {
+  // Calculate the start and end of the selected month if provided
+  let monthStart: Date | undefined;
+  let monthEnd: Date | undefined;
+  
+  if (selectedMonth && selectedYear) {
+    const year = parseInt(selectedYear) - 543; // Thai year to Gregorian
+    const month = parseInt(selectedMonth) - 1;
+    monthStart = new Date(year, month, 1);
+    monthEnd = new Date(year, month + 1, 1);
+  }
+  
   return db.query.FloorTable.findMany({
     columns: { id: true, floor: true },
     where: (table, { eq }) => eq(table.apartmentId, apartment),
@@ -186,7 +220,15 @@ async function getRooms(apartment: number, now: Date) {
               tenant: {
                 columns: { id: true, name: true },
               },
-              rentBills: {
+              rentBills: monthStart && monthEnd ? {
+                columns: { fee: true, paid: true, createdAt: true, userId: true },
+                where: (table, { and, gte, lt }) => and(
+                  gte(table.createdAt, monthStart!),
+                  lt(table.createdAt, monthEnd!)
+                ),
+                orderBy: (table, { desc }) => desc(table.createdAt),
+                limit: 1,
+              } : {
                 columns: { fee: true, paid: true, createdAt: true, userId: true },
                 orderBy: (table, { desc }) => desc(table.createdAt),
                 limit: 1,
@@ -250,7 +292,7 @@ export default async function Page({ searchParams }: { searchParams: any }) {
       label: String(year),
     };
   });
-  let data = await getRooms(apartments[currentApartment].id, now);
+  let data = await getRooms(apartments[currentApartment].id, now, monthValue, yearValue);
   // Server-side filter by tenant name if search param is present
   let searchValue = typeof search === "string" ? search.trim().toLowerCase() : "";
   if (searchValue) {
@@ -359,7 +401,10 @@ export default async function Page({ searchParams }: { searchParams: any }) {
                           />
                         </td>
                         <td className="px-4 py-0.25 text-center">
-                          {room.paymentPlan?.rentBills?.[0]?.paid ? "ชำระแล้ว" : "ยังไม่ชำระ"}
+                          {room.paymentPlan?.rentBills?.[0] ? 
+                            (room.paymentPlan.rentBills[0].paid ? "ชำระแล้ว" : "ยังไม่ชำระ") : 
+                            "ยังไม่ส่ง"
+                          }
                         </td>
                         <td className="px-4 py-0.25 text-center">
                           <Link href="/" target="_blank" rel="noopener" className="bg-[#FFAC3E] hover:bg-[#FFAC3E] rounded-lg text-white py-0.25 px-2">พิมพ์</Link>

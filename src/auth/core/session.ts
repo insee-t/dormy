@@ -28,6 +28,33 @@ export type Cookies = {
   delete: (key: string) => void
 }
 
+export async function updateUserSessionData(
+  user: UserSession,
+  cookies: Pick<Cookies, "get">
+) {
+  const sessionId = cookies.get(COOKIE_SESSION_KEY)?.value
+  if (sessionId == null) return null
+
+  await redisClient.set(`session:${sessionId}`, JSON.stringify(sessionSchema.parse(user)), {
+    EX: SESSION_EXPIRATION_SECONDS,
+  })
+}
+
+export async function updateUserSessionExpiration(
+  cookies: Pick<Cookies, "get" | "set">
+) {
+  const sessionId = cookies.get(COOKIE_SESSION_KEY)?.value
+  if (sessionId == null) return null
+
+  const user = await getUserSessionById(sessionId)
+  if (user == null) return
+
+  await redisClient.set(`session:${sessionId}`, JSON.stringify(user), {
+    EX: SESSION_EXPIRATION_SECONDS,
+  })
+  setCookie(sessionId, cookies)
+}
+
 export function getUserFromSession(cookies: Pick<Cookies, "get">) {
   const sessionId = cookies.get(COOKIE_SESSION_KEY)?.value
   if (sessionId == null) return null
