@@ -111,24 +111,24 @@ export default async function TenantDashboard() {
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+      <div className="bg-gradient-to-r from-[#01BCB4] to-[#00a8a0] rounded-lg shadow-md p-6 text-white">
+        <h1 className="text-2xl font-bold mb-2">
           ยินดีต้อนรับกลับ, {tenant.name}!
         </h1>
-        <p className="text-gray-600">
+        <p className="text-[#e6f7f6]">
           ห้อง {tenant.paymentPlan?.room?.roomNumber} • {tenant.paymentPlan?.room?.floor.apartment.name}
         </p>
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card>
+      <div className="bg-white grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 border-slate-300">
+        <Card className="border-slate-300 hover:shadow-lg transition-shadow duration-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">ค่าเช่ารายเดือน</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-[#01BCB4]">
               ฿{latestRent?.fee || tenant.paymentPlan?.fee || 0}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -137,13 +137,13 @@ export default async function TenantDashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-slate-300 hover:shadow-lg transition-shadow duration-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">ค่าไฟ</CardTitle>
             <AlertTriangle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-[#01BCB4]">
               {latestElectric?.paid ? "ชำระแล้ว" : "รอชำระ"}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -152,13 +152,13 @@ export default async function TenantDashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-slate-300 hover:shadow-lg transition-shadow duration-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">ค่าน้ำ</CardTitle>
             <AlertTriangle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-[#01BCB4]">
               {latestWater?.paid ? "ชำระแล้ว" : "รอชำระ"}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -167,13 +167,13 @@ export default async function TenantDashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-slate-300 hover:shadow-lg transition-shadow duration-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">การซ่อมบำรุง</CardTitle>
             <Home className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-[#01BCB4]">
               {pendingComplaints.length}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -184,8 +184,8 @@ export default async function TenantDashboard() {
       </div>
 
       {/* Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
+      <div className="bg-white grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card className="border-slate-300 hover:shadow-lg transition-shadow duration-200">
           <CardHeader>
             <CardTitle>คำขอซ่อมบำรุงล่าสุด</CardTitle>
             <CardDescription>
@@ -202,10 +202,10 @@ export default async function TenantDashboard() {
                 {tenant.complains.slice(0, 3).map((complaint) => (
                   <div
                     key={complaint.id}
-                    className="flex items-center justify-between p-3 border rounded-lg"
+                    className="flex items-center justify-between p-3 border rounded-lg hover:border-[#01BCB4] transition-colors duration-200"
                   >
                     <div>
-                      <p className="font-medium">{complaint.reportType}</p>
+                      <p className="font-medium text-[#01BCB4]">{complaint.reportType}</p>
                       <p className="text-sm text-gray-600">
                         {complaint.description.substring(0, 50)}...
                       </p>
@@ -231,7 +231,7 @@ export default async function TenantDashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-slate-300 hover:shadow-lg transition-shadow duration-200">
           <CardHeader>
             <CardTitle>การดำเนินการด่วน</CardTitle>
             <CardDescription>

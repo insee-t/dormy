@@ -45,27 +45,27 @@ export default async function AuthenticatedTenantLayout({
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Tenant Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-gradient-to-r from-[#01BCB4] to-[#00a8a0] shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-semibold text-gray-900">
+              <h1 className="text-xl font-semibold text-white">
                 Dormy Resident
               </h1>
               {paymentPlan?.room && (
-                <span className="ml-4 text-sm text-gray-500">
+                <span className="ml-4 text-sm text-[#e6f7f6]">
                   ห้อง {paymentPlan.room.roomNumber} - {paymentPlan.room.floor.apartment.name}
                 </span>
               )}
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-700">
+              <span className="text-sm text-white">
                 ยินดีต้อนรับ, {tenant?.name}
               </span>
               <form action="/auth/sign-out" method="post">
                 <button
                   type="submit"
-                  className="text-sm text-red-600 hover:text-red-800"
+                  className="text-sm text-white hover:text-[#e6f7f6] transition-colors duration-200 px-3 py-1 rounded-md hover:bg-white/10"
                 >
                   ออกจากระบบ
                 </button>
@@ -76,30 +76,30 @@ export default async function AuthenticatedTenantLayout({
       </header>
 
       {/* Tenant Navigation */}
-      <nav className="bg-white shadow-sm">
+      <nav className="bg-white shadow-md border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex space-x-8">
             <a
               href="/tenant/dashboard"
-              className="py-4 px-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              className="py-4 px-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-[#01BCB4] hover:border-[#01BCB4] transition-colors duration-200"
             >
               แดชบอร์ด
             </a>
             <a
               href="/tenant/bills"
-              className="py-4 px-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              className="py-4 px-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-[#01BCB4] hover:border-[#01BCB4] transition-colors duration-200"
             >
               ใบแจ้งหนี้และการชำระเงิน
             </a>
             <a
               href="/tenant/maintenance"
-              className="py-4 px-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              className="py-4 px-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-[#01BCB4] hover:border-[#01BCB4] transition-colors duration-200"
             >
               คำขอซ่อมบำรุง
             </a>
             {/* <a
               href="/tenant/profile"
-              className="py-4 px-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              className="py-4 px-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-[#01BCB4] hover:border-[#01BCB4] transition-colors duration-200"
             >
               โปรไฟล์
             </a> */}

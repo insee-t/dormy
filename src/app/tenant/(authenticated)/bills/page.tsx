@@ -215,7 +215,7 @@ export default function TenantBillsPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
+    <div className="max-w-4xl bg-white mx-auto p-6 space-y-6 rounded-2xl shadow-md">
       {/* Header */}
       <div className="flex items-center space-x-4">
         <Link href="/tenant/dashboard">
