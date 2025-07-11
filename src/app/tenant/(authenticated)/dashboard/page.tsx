@@ -41,21 +41,8 @@ async function getTenantData(userId: string) {
     }
   });
 
-  // Filter to ensure the payment plan belongs to an apartment owned by the current user
-  if (paymentPlan && paymentPlan.room?.floor?.apartment?.userId !== userId) {
-    // Get complaints for the return
-    const complains = await db.query.ComplainTable.findMany({
-      where: eq(ComplainTable.userId, userId),
-      orderBy: (table, { desc }) => desc(table.createdAt),
-      limit: 5
-    });
-    
-    return {
-      ...user,
-      paymentPlan: null,
-      complains
-    };
-  }
+  // For tenant dashboard, we want to show the payment plan where the tenant (userId) is the one who has the payment plan
+  // The filtering logic was incorrect - we don't need to filter by apartment owner for tenant dashboard
 
   // Calculate electric and water fees if needed
   if (paymentPlan) {
@@ -122,7 +109,6 @@ export default async function TenantDashboard() {
   const latestRent = tenant.paymentPlan?.rentBills[0];
   const pendingComplaints = tenant.complains.filter(c => c.status !== "complete");
   const completedComplaints = tenant.complains.filter(c => c.status === "complete");
-  console.log(latestRent)
 
   return (
     <div className="space-y-6">

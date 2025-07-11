@@ -143,3 +143,7 @@ people are dumb they may insert meter incorrect in the prev Month
 # need to add color to tenant information page.
 
 # no need for mail system. because where to put them?
+
+# should have it own summary(รวม) of edit apartment
+
+# invoice button on meter should also print rent bill I guess.

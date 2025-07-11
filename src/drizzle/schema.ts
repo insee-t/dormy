@@ -43,6 +43,7 @@ export const complainStatusEnum = pgEnum("complain_status", complainStatusTypes)
 export const UserTable = pgTable("tenants", {
   id: uuid().primaryKey().defaultRandom(),
   name: text().notNull(),
+  realName: text(),
   email: text().notNull().unique(),
   phone: text(),
   password: text(),
@@ -63,6 +64,7 @@ export const ApartmentTable = pgTable("apartments", {
   billDate: timestamp({ withTimezone: true }).notNull(),
   paymentDate: timestamp({ withTimezone: true }).notNull(),
   email: text(),
+  taxId: text(),
   userId: uuid()
     .notNull()
     .references(() => UserTable.id, { onDelete: "cascade" }),

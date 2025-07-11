@@ -57,7 +57,7 @@ export const getCurrentUser = cache(_getCurrentUser)
 
 function getUserFromDb(id: string) {
   return db.query.UserTable.findFirst({
-    columns: { id: true, email: true, role: true, name: true },
+    columns: { id: true, email: true, role: true, name: true, realName: true, phone: true },
     where: eq(UserTable.id, id),
   })
 }

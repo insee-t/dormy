@@ -9,6 +9,7 @@ import App from "@/components/Sidebar/App";
 import Link from "next/link";
 import getApartments from "@/lib/getApartments";
 import ApartmentSelectForm from "@/components/ApartmentSelectForm";
+import PrintInvoiceButton from "@/components/PrintInvoiceButton";
 
 async function saveMeterReadings(formData: FormData) {
   "use server"
@@ -550,12 +551,15 @@ export default async function Page({
                                    className="text-center border border-slate-300 w-28 bg-white rounded-md"/>
                                </td>
                                <td className="px-4 py-0.25 text-center">
-                                 <Link href="/"
-                                   target="_blank"
-                                   rel="noopener"
-                                   className="bg-[#018c98] hover:bg-[#FFAC3E] rounded-lg text-white py-0.25 px-2">
-                                   พิมพ์
-                                 </Link>
+                                 {room.paymentPlan?.tenant ? (
+                                   <PrintInvoiceButton 
+                                     roomId={room.id}
+                                     month={(now.getMonth() + 1).toString()}
+                                     year={now.getFullYear().toString()}
+                                   />
+                                 ) : (
+                                   <span className="text-gray-400 text-sm">ไม่มีผู้เช่า</span>
+                                 )}
                                </td>
                                <td className="px-4 py-0.25 text-center">
                                    {room?.paymentPlan?.electrics ? "N/A" : (room?.paymentPlan?.electrics[0].paid ? "ชำระแล้ว": "ยังไม่ชำระ") }

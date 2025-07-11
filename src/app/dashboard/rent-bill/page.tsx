@@ -15,6 +15,7 @@ import React from "react";
 import App from "@/components/Sidebar/App";
 import Link from "next/link";
 import ApartmentSelectForm from "@/components/ApartmentSelectForm";
+import PrintInvoiceButton from "@/components/PrintInvoiceButton";
 
 // Save rent bills for each room for the selected month/year
 async function saveRentBills(formData: FormData) {
@@ -407,7 +408,15 @@ export default async function Page({ searchParams }: { searchParams: any }) {
                           }
                         </td>
                         <td className="px-4 py-0.25 text-center">
-                          <Link href="/" target="_blank" rel="noopener" className="bg-[#FFAC3E] hover:bg-[#FFAC3E] rounded-lg text-white py-0.25 px-2">พิมพ์</Link>
+                          {room.paymentPlan?.tenant ? (
+                            <PrintInvoiceButton 
+                              roomId={room.id}
+                              month={monthValue}
+                              year={yearValue}
+                            />
+                          ) : (
+                            <span className="text-gray-400 text-sm">ไม่มีผู้เช่า</span>
+                          )}
                         </td>
                       </tr>
                     ))}
