@@ -101,7 +101,7 @@ export default async function TenantsPage({ searchParams }: TenantsPageProps) {
         <div className="flex flex-col gap-4 mb-6">
 
           {/* Search Form */}
-          <Card>
+          <Card className="border-slate-300">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Search className="w-5 h-5" />
@@ -117,7 +117,7 @@ export default async function TenantsPage({ searchParams }: TenantsPageProps) {
                   name="search"
                   placeholder="ค้นหาผู้เช่า..."
                   defaultValue={search}
-                  className="flex-1"
+                  className="flex-1 border-slate-300"
                 />
                 <Button type="submit">ค้นหา</Button>
                 {search && (
@@ -150,7 +150,7 @@ export default async function TenantsPage({ searchParams }: TenantsPageProps) {
               
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {tenants.map((tenant) => (
-                  <Card key={tenant.id} className="hover:shadow-lg transition-shadow">
+                  <Card key={tenant.id} className="hover:shadow-lg transition-shadow border-slate-300">
                     <CardHeader>
                       <div className="flex justify-between items-start">
                         <div>
