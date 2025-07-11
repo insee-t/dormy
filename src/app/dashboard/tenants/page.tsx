@@ -21,17 +21,17 @@ import { Search, Phone, Mail, Calendar, MapPin, Home } from "lucide-react";
 import SearchButton from "@/components/SearchButton";
 
 interface TenantsPageProps {
-  searchParams: {
+  searchParams: Promise<{
     search?: string;
     apartment?: string;
-  };
+  }>;
 }
 
 export default async function TenantsPage({ searchParams }: TenantsPageProps) {
   const currentUser = await getCurrentUser({ withFullUser: true, redirectIfNotFound: true });
   const apartments = await getApartments(currentUser.id);
   
-  const search = searchParams.search || '';
+  const { search } = await searchParams || '';
 
   if (!apartments.length) {
     return (
@@ -59,7 +59,7 @@ export default async function TenantsPage({ searchParams }: TenantsPageProps) {
     let whereConditions = [];
 
     // Add search conditions if search term is provided
-    if (search.trim()) {
+    if (search && search.trim()) {
       whereConditions.push(
         or(
           ilike(UserTable.name, `%${search}%`),

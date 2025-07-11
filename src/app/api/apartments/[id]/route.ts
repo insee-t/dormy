@@ -17,7 +17,7 @@ interface UpdateApartmentRequest {
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const currentUser = await getCurrentUser({ 
@@ -32,7 +32,8 @@ export async function PUT(
       );
     }
 
-    const apartmentId = parseInt(params.id);
+    const { id } = await params;
+    const apartmentId = parseInt(id);
     if (isNaN(apartmentId)) {
       return NextResponse.json(
         { message: "ID หอพักไม่ถูกต้อง" },

@@ -8,14 +8,13 @@ import { notFound } from "next/navigation";
 import EditApartmentForm from "./EditApartmentForm";
 
 interface EditApartmentPageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
 
 export default async function EditApartmentPage({ params }: EditApartmentPageProps) {
   const currentUser = await getCurrentUser({ withFullUser: true, redirectIfNotFound: true });
-  const apartmentId = parseInt(params.id);
+  const { id } = await params;
+  const apartmentId = parseInt(id);
 
   if (isNaN(apartmentId)) {
     notFound();

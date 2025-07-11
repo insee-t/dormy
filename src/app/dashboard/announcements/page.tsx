@@ -17,16 +17,17 @@ import { Plus, Calendar, User, Building, AlertTriangle, Info, CheckCircle, Megap
 import Link from "next/link";
 
 interface AnnouncementsPageProps {
-  searchParams: {
+  searchParams: Promise<{
     apartment?: string;
-  };
+  }>;
 }
 
 export default async function AnnouncementsPage({ searchParams }: AnnouncementsPageProps) {
   const currentUser = await getCurrentUser({ withFullUser: true, redirectIfNotFound: true });
   const apartments = await getApartments(currentUser.id);
   
-  const selectedApartmentId = searchParams.apartment ? parseInt(searchParams.apartment) : apartments[0]?.id;
+  const { apartment } = await searchParams;
+  const selectedApartmentId = apartment ? parseInt(apartment) : apartments[0]?.id;
 
   if (!apartments.length) {
     return (
