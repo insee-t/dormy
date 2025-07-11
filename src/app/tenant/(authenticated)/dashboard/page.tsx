@@ -129,7 +129,7 @@ export default async function TenantDashboard() {
       {/* Welcome Section */}
       <div className="bg-gradient-to-r from-[#01BCB4] to-[#00a8a0] rounded-lg shadow-md p-6 text-white">
         <h1 className="text-2xl font-bold mb-2">
-          ยินดีต้อนรับกลับ, {tenant.name}!
+          ยินดีต้อนรับกลับ, {tenant.name}
         </h1>
         <p className="text-[#e6f7f6]">
           ห้อง {tenant.paymentPlan?.room?.roomNumber} • {tenant.paymentPlan?.room?.floor.apartment.name}
