@@ -7,9 +7,8 @@ import App from "@/components/Sidebar/App";
 
 async function getPaymentStatements(userId: string) {
   try {
-    // Get payment plans for the current user with their associated data
+    // Get payment plans only for apartments owned by the current user
     const paymentPlans = await db.query.PaymentPlanTable.findMany({
-      where: eq(PaymentPlanTable.userId, userId),
       with: {
         room: {
           with: {
@@ -32,8 +31,13 @@ async function getPaymentStatements(userId: string) {
       }
     })
 
+    // Filter payment plans to only include those from apartments owned by the current user AND have a tenant assigned
+    const filteredPaymentPlans = paymentPlans.filter(plan => 
+      plan.room?.floor?.apartment?.userId === userId && plan.userId !== null
+    )
+
     // Transform the data to match the expected format
-    const statements = paymentPlans.map((plan) => {
+    const statements = filteredPaymentPlans.map((plan) => {
       const latestRent = plan.rentBills[0]
       const latestReceipt = plan.receipts[0]
       
@@ -67,7 +71,7 @@ async function getPaymentStatements(userId: string) {
 export default async function ReviewReceiptPage() {
   const currentUser = await getCurrentUser({ withFullUser: true, redirectIfNotFound: true })
   
-  // Fetch payment statements from database for the current user
+  // Fetch payment statements from database
   const paymentStatements = await getPaymentStatements(currentUser.id)
 
   return <App title="ตรวจสอบใบเสร็จ" userName={currentUser.name}>

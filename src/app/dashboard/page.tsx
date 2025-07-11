@@ -28,7 +28,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: an
           <p className="text-xl mb-4">คุณยังไม่มีหอพักในระบบ</p>
           <a
             href="/dashboard/new-apartment"
-            className="bg-[#01BCB4] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-[#01BCB4] hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded"
           >
             สร้างหอพักใหม่
           </a>

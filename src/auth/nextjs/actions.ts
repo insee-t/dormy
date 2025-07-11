@@ -34,7 +34,6 @@ export async function signIn(unsafeData: z.infer<typeof signInSchema>) {
 
     await createUserSession(user, await cookies())
 
-    // Redirect based on user role
     if (user.role === "user") {
         redirect("/tenant/dashboard")
     } else {
@@ -46,6 +45,8 @@ export async function signUp(unsafeData: z.infer<typeof signUpSchema>) {
     const { success, data } = signUpSchema.safeParse(unsafeData)
 
     if (!success) return "Unable to create account"
+
+    let redirectPath: string | null = null
 
     try {
         const existingUser = await db.query.UserTable.findFirst({
@@ -70,15 +71,18 @@ export async function signUp(unsafeData: z.infer<typeof signUpSchema>) {
         if (user == null) return  "Unable to create account"
         await createUserSession(user, await cookies())
         
-        // Redirect based on user role
         if (user.role === "user") {
-            redirect("/tenant/dashboard")
+            redirectPath = `/tenant/dashboard`
         } else {
-            redirect("/")
+            redirectPath = `/dashboard`
         }
     } catch (err) {
+        redirectPath = `/`
         console.error('Err:', err)
         return  "Unable to create account"
+    } finally {
+        if (redirectPath)
+            redirect(redirectPath)
     }
 }
 

@@ -165,11 +165,11 @@ export default function Component({ children, title = "Overview", userName }) {
           <div className="flex items-center gap-4">
             <div className="bg-blue-50 px-3 py-1 rounded-full flex items-center">
               <Clock
-                className="text-#3491b4 mr-2"
+                className="mr-2"
                 size={20}
-                color="white"
+                color="black"
               />
-              <span className="text-sm text-#4F5665 hidden sm:block">
+              <span className="text-sm text-[#4F5665] hidden sm:block">
                 แพ็คเกจเหลือ 29 วัน
               </span>
             </div>

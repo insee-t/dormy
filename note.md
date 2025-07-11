@@ -135,3 +135,5 @@ people are dumb they may insert meter incorrect in the prev Month
 # DONE current flow are wrong. payment plan should be static. and rent are monthly.
 
 # nav bar reload
+
+# โปรด login ด้วย google

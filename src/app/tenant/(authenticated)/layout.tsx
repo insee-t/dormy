@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { db } from "@/drizzle/db";
 import { UserTable, PaymentPlanTable, RoomTable, FloorTable, ApartmentTable } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
+import { logOut } from "@/auth/nextjs/actions";
+import LogOutButton from "@/components/LogoutButton";
 
 export default async function AuthenticatedTenantLayout({
   children,
@@ -62,14 +64,7 @@ export default async function AuthenticatedTenantLayout({
               <span className="text-sm text-white">
                 ยินดีต้อนรับ, {tenant?.name}
               </span>
-              <form action="/auth/sign-out" method="post">
-                <button
-                  type="submit"
-                  className="text-sm text-white hover:text-[#e6f7f6] transition-colors duration-200 px-3 py-1 rounded-md hover:bg-white/10"
-                >
-                  ออกจากระบบ
-                </button>
-              </form>
+              <LogOutButton />
             </div>
           </div>
         </div>

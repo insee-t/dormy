@@ -7,15 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Calendar, DollarSign, Home, AlertTriangle, CheckCircle } from "lucide-react";
 import Link from "next/link";
 
-async function getTenantData(tenantId: string) {
+async function getTenantData(userId: string) {
   // Get user data
   const user = await db.query.UserTable.findFirst({
-    where: eq(UserTable.id, tenantId),
+    where: eq(UserTable.id, userId),
   });
 
-  // Get payment plan with room and bills
+  // Get payment plan with room and bills - only for apartments owned by current user
   const paymentPlan = await db.query.PaymentPlanTable.findFirst({
-    where: eq(PaymentPlanTable.userId, tenantId),
+    where: eq(PaymentPlanTable.userId, userId),
     with: {
       room: {
         with: {
@@ -40,6 +40,22 @@ async function getTenantData(tenantId: string) {
       }
     }
   });
+
+  // Filter to ensure the payment plan belongs to an apartment owned by the current user
+  if (paymentPlan && paymentPlan.room?.floor?.apartment?.userId !== userId) {
+    // Get complaints for the return
+    const complains = await db.query.ComplainTable.findMany({
+      where: eq(ComplainTable.userId, userId),
+      orderBy: (table, { desc }) => desc(table.createdAt),
+      limit: 5
+    });
+    
+    return {
+      ...user,
+      paymentPlan: null,
+      complains
+    };
+  }
 
   // Calculate electric and water fees if needed
   if (paymentPlan) {
@@ -77,7 +93,7 @@ async function getTenantData(tenantId: string) {
 
   // Get complaints
   const complains = await db.query.ComplainTable.findMany({
-    where: eq(ComplainTable.userId, tenantId),
+    where: eq(ComplainTable.userId, userId),
     orderBy: (table, { desc }) => desc(table.createdAt),
     limit: 5
   });
