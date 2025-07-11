@@ -5,6 +5,7 @@ import Image from "next/image";
 import ButtonPrimary from "./misc/ButtonPrimary";
 import ScrollAnimationWrapper from "./Layout/ScrollAnimationWrapper";
 import ButtonOutline from "./misc/ButtonOutline.";
+import Link from "next/link";
 
 const Hero = ({
   listUser = [
@@ -41,7 +42,7 @@ const Hero = ({
               <div className="animate-fade-in">
                 <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-800 leading-tight mb-6">
                   จัดการหอพักด้วย
-                  &nbsp;<strong className="text-[#FFAC3E] drop-shadow-[0_3px_4px_rgba(0,0,0,0.3)] drop-shadow-[0_4px_2px_rgba(0,0,0,0.5)]">DORMY</strong>
+                  <strong className="text-[#FFAC3E] drop-shadow-[0_3px_4px_rgba(0,0,0,0.3)] drop-shadow-[0_4px_2px_rgba(0,0,0,0.5)]">DORMY</strong>
                 </h1>
                 <p className="text-gray-600 text-lg mb-8 leading-relaxed">
                   ระบบจัดการหอพัก อพาร์ทเมนท์ที่ช่วยให้เจ้าของหอพักบริหารจัดการค่าใช้จ่ายและดูแลผู้เช่าได้อย่างมีประสิทธิภาพ
@@ -51,9 +52,9 @@ const Hero = ({
                   {/* <button className="px-8 py-3 bg-gradient-to-r from-[#01BCB4] to-[#01BCB4]/90 text-white rounded-lg font-semibold hover:from-[#01BCB4]/90 hover:to-[#01BCB4] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                     ดูตัวอย่างฟรี
                   </button> */}
-                  <button className="px-8 py-3 bg-gradient-to-r from-[#01BCB4] to-[#01BCB4]/90 text-white rounded-lg font-semibold hover:from-[#01BCB4]/90 hover:to-[#01BCB4] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                  <Link href="/sign-up" className="px-8 py-3 bg-gradient-to-r from-[#01BCB4] to-[#01BCB4]/90 text-white rounded-lg font-semibold hover:from-[#01BCB4]/90 hover:to-[#01BCB4] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                     เริ่มต้นใช้งาน 30 วัน คลิกเลย
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

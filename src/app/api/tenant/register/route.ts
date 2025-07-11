@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, password, roomId } = body;
+    const { name, email, phone, password, roomId } = body;
 
     // Validate required fields
     if (!name || !email || !password || !roomId) {
@@ -53,6 +53,7 @@ export async function POST(request: NextRequest) {
     const [newTenant] = await db.insert(UserTable).values({
       name,
       email,
+      phone,
       password: hashedPassword,
       role: "user"
     }).returning();
@@ -72,7 +73,8 @@ export async function POST(request: NextRequest) {
       tenant: {
         id: newTenant.id,
         name: newTenant.name,
-        email: newTenant.email
+        email: newTenant.email,
+        phone: newTenant.phone
       }
     });
 

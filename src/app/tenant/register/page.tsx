@@ -38,6 +38,7 @@ export default function TenantRegister() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
     password: "",
     confirmPassword: "",
   });
@@ -234,6 +235,18 @@ export default function TenantRegister() {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="phone">เบอร์โทรศัพท์</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    placeholder="081-234-5678"
+                    required
                   />
                 </div>
 

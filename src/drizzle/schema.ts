@@ -44,6 +44,7 @@ export const UserTable = pgTable("tenants", {
   id: uuid().primaryKey().defaultRandom(),
   name: text().notNull(),
   email: text().notNull().unique(),
+  phone: text(),
   password: text(),
   role: userRoleEnum().notNull().default("user"),
   createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
