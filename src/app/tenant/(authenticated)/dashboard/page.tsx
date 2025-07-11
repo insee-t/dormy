@@ -4,7 +4,7 @@ import { UserTable, PaymentPlanTable, ComplainTable, RentTable, ElectricTable, W
 import { eq } from "drizzle-orm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, DollarSign, Home, AlertTriangle, CheckCircle } from "lucide-react";
+import { Calendar, DollarSign, Home, AlertTriangle, CheckCircle, Megaphone } from "lucide-react";
 import Link from "next/link";
 
 async function getTenantData(userId: string) {
@@ -267,6 +267,13 @@ export default async function TenantDashboard() {
                 <Button className="w-full justify-start" variant="outline">
                   <AlertTriangle className="mr-2 h-4 w-4" />
                   ส่งคำขอซ่อมบำรุง
+                </Button>
+              </Link>
+              
+              <Link href="/tenant/announcements">
+                <Button className="w-full justify-start" variant="outline">
+                  <Megaphone className="mr-2 h-4 w-4" />
+                  ดูประกาศและข่าวสาร
                 </Button>
               </Link>
               

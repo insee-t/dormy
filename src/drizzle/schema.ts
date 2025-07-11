@@ -259,6 +259,25 @@ export const ReceiptTable = pgTable("receipts", {
     .$onUpdate(() => new Date()),
 })
 
+export const AnnouncementTable = pgTable("announcements", {
+  id: serial("id").primaryKey(),
+  title: text().notNull(),
+  content: text().notNull(),
+  priority: text().notNull().default("normal"), // low, normal, high, urgent
+  isPublished: boolean().notNull().default(true),
+  apartmentId: serial()
+    .notNull()
+    .references(() => ApartmentTable.id, { onDelete: "cascade" }),
+  createdBy: uuid()
+    .notNull()
+    .references(() => UserTable.id, { onDelete: "cascade" }),
+  createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp({ withTimezone: true })
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+})
+
 export const userRelations = relations(UserTable, ({ one, many }) => ({
   oAuthAccounts: many(UserOAuthAccountTable),
   apartments: many(ApartmentTable),
@@ -266,6 +285,7 @@ export const userRelations = relations(UserTable, ({ one, many }) => ({
   packages: many(PackageTable),
   complains: many(ComplainTable),
   receipts: many(ReceiptTable),
+  announcements: many(AnnouncementTable),
 }))
 
 export const oAuthProviders = ["discord", "github", "google"] as const
@@ -318,6 +338,7 @@ export const apartmentRelationships = relations(
       references: [UserTable.id],
     }),
     bankAccountAssociations: many(BankAccountApartmentTable),
+    announcements: many(AnnouncementTable),
   })
 )
 
@@ -437,6 +458,20 @@ export const receiptRelationships = relations(
     paymentPlan: one(PaymentPlanTable, {
       fields: [ReceiptTable.paymentPlanId],
       references: [PaymentPlanTable.id],
+    })
+  })
+)
+
+export const announcementRelationships = relations(
+  AnnouncementTable,
+  ({ one }) => ({
+    apartment: one(ApartmentTable, {
+      fields: [AnnouncementTable.apartmentId],
+      references: [ApartmentTable.id],
+    }),
+    creator: one(UserTable, {
+      fields: [AnnouncementTable.createdBy],
+      references: [UserTable.id],
     })
   })
 )

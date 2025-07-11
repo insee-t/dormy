@@ -137,3 +137,9 @@ people are dumb they may insert meter incorrect in the prev Month
 # nav bar reload
 
 # โปรด login ด้วย google
+
+# announcement should be main page for tenant.
+
+# need to add color to tenant information page.
+
+# no need for mail system. because where to put them?

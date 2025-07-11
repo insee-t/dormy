@@ -152,7 +152,7 @@ export default function RoomLayout({ roomsWithStatus, summaryData }: RoomLayoutP
                       <User className="w-12 h-12 mt-1" />
                     </div>
                   </div>
-                  <div className="flex gap-1 mt-2">
+                  <div className="flex flex-col gap-1 mt-2">
                     {statusOptions.map(opt => (
                       <button
                         key={opt.value}

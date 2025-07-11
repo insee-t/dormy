@@ -40,6 +40,7 @@ const toast = {
 interface Floor {
   floorNumber: number;
   roomAmount: number;
+  roomNumberPrefix?: string;
   rooms?: Room[];
 }
 
@@ -79,6 +80,7 @@ export default function CreateRoomsForm({ apartmentId, apartmentName, fromPage }
   const [defaultWaterFeePerMatrix, setDefaultWaterFeePerMatrix] = useState(0);
   const [defaultElectricFeePerMatrix, setDefaultElectricFeePerMatrix] = useState(0);
   const [floorPaymentPlans, setFloorPaymentPlans] = useState<{ [key: string]: { fee: number; lateFee: number; waterFeePerMatrix: number; electricFeePerMatrix: number } }>({});
+  const [floorRoomNumberPrefixes, setFloorRoomNumberPrefixes] = useState<{ [key: string]: string }>({});
 
   // Redirect if no apartmentId
   useEffect(() => {
@@ -160,17 +162,44 @@ export default function CreateRoomsForm({ apartmentId, apartmentName, fromPage }
     });
   };
 
-  const handleFloorFeeChange = (floorNumber: number, fee: number) => {
+  const handleFloorFeeChange = (floorNumber: number, field: string, value: number) => {
     setFloorPaymentPlans((prev) => ({
       ...prev,
-      [floorNumber.toString()]: { fee: fee, lateFee: defaultLateFee, waterFeePerMatrix: defaultWaterFeePerMatrix, electricFeePerMatrix: defaultElectricFeePerMatrix },
+      [floorNumber.toString()]: { 
+        ...(prev[floorNumber.toString()] || { 
+          fee: defaultFee, 
+          lateFee: defaultLateFee, 
+          waterFeePerMatrix: defaultWaterFeePerMatrix, 
+          electricFeePerMatrix: defaultElectricFeePerMatrix 
+        }),
+        [field]: value 
+      },
+    }));
+  };
+
+  const handleFloorRoomAmountChange = (floorNumber: number, roomAmount: number) => {
+    setFloors((prev) =>
+      prev.map((floor) =>
+        floor.floorNumber === floorNumber
+          ? { ...floor, roomAmount: roomAmount, rooms: [] }
+          : floor
+      )
+    );
+  };
+
+  const handleFloorRoomNumberPrefixChange = (floorNumber: number, prefix: string) => {
+    setFloorRoomNumberPrefixes((prev) => ({
+      ...prev,
+      [floorNumber.toString()]: prefix
     }));
   };
 
   const generateRoomsForFloor = (floor: Floor) => {
     const rooms: Room[] = [];
+    const prefix = floorRoomNumberPrefixes[floor.floorNumber.toString()] || floor.floorNumber.toString();
+    
     for (let i = 1; i <= floor.roomAmount; i++) {
-      const roomNumber = `${floor.floorNumber}${i.toString().padStart(2, '0')}`;
+      const roomNumber = `${prefix}${i.toString().padStart(2, '0')}`;
       rooms.push({
         roomNumber: roomNumber,
       });
@@ -181,8 +210,10 @@ export default function CreateRoomsForm({ apartmentId, apartmentName, fromPage }
   const generatePaymentPlansForFloor = (floor: Floor) => {
     const paymentPlans: PaymentPlan[] = [];
     const floorPaymentPlan = floorPaymentPlans[floor.floorNumber.toString()] || { fee: defaultFee, lateFee: defaultLateFee, waterFeePerMatrix: defaultWaterFeePerMatrix, electricFeePerMatrix: defaultElectricFeePerMatrix };
+    const prefix = floorRoomNumberPrefixes[floor.floorNumber.toString()] || floor.floorNumber.toString();
+    
     for (let i = 1; i <= floor.roomAmount; i++) {
-      const roomNumber = `${floor.floorNumber}${i.toString().padStart(2, '0')}`;
+      const roomNumber = `${prefix}${i.toString().padStart(2, '0')}`;
       const individualPaymentPlan = floorPaymentPlans[`${floor.floorNumber}_${roomNumber}`] || floorPaymentPlan;
       paymentPlans.push({
         fee: individualPaymentPlan.fee,
@@ -525,8 +556,8 @@ export default function CreateRoomsForm({ apartmentId, apartmentName, fromPage }
             )}
 
             {/* Table */}
-            <div className="rounded-md border">
-              <Table>
+            <div className="rounded-md border overflow-x-auto">
+              <Table className="min-w-full">
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-12">
@@ -535,183 +566,237 @@ export default function CreateRoomsForm({ apartmentId, apartmentName, fromPage }
                         onCheckedChange={handleSelectAll}
                       />
                     </TableHead>
-                    <TableHead>ชั้น</TableHead>
-                    <TableHead>จำนวนห้อง</TableHead>
-                    <TableHead>ค่าเช่า (บาท)</TableHead>
-                    <TableHead>ค่าปรับล่าช้า (บาท)</TableHead>
-                    <TableHead>ค่าน้ำต่อหน่วย (บาท)</TableHead>
-                    <TableHead>ค่าไฟต่อหน่วย (บาท)</TableHead>
-                    <TableHead></TableHead>
+                    <TableHead className="w-20">ชั้น</TableHead>
+                    <TableHead className="w-32">จำนวนห้อง</TableHead>
+                    <TableHead className="w-32">รหัสห้อง</TableHead>
+                    <TableHead className="w-40">ค่าเช่า (บาท)</TableHead>
+                    <TableHead className="w-40">ค่าปรับล่าช้า (บาท)</TableHead>
+                    <TableHead className="w-40">ค่าน้ำต่อหน่วย (บาท)</TableHead>
+                    <TableHead className="w-40">ค่าไฟต่อหน่วย (บาท)</TableHead>
+                    <TableHead className="w-32">รายละเอียด</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {floors.map((floor) => (
-                    <React.Fragment key={floor.floorNumber}>
-                      <TableRow className="group">
-                        <TableCell>
-                          <Checkbox
-                            checked={selectedFloor.includes(floor.floorNumber)}
-                            onCheckedChange={(checked) =>
-                              handleSelectFloor(floor.floorNumber, checked as boolean)
-                            }
-                          />
-                        </TableCell>
-                        <TableCell className="font-medium">
-                          {floor.floorNumber}
-                        </TableCell>
-                        <TableCell className="font-medium">
-                          {floor.roomAmount}
-                        </TableCell>
-                        <TableCell className="font-medium">
-                          {floorPaymentPlans[floor.floorNumber.toString()]?.fee || defaultFee}
-                        </TableCell>
-                        <TableCell className="font-medium">
-                          {floorPaymentPlans[floor.floorNumber.toString()]?.lateFee || defaultLateFee}
-                        </TableCell>
-                        <TableCell className="font-medium">
-                          {floorPaymentPlans[floor.floorNumber.toString()]?.waterFeePerMatrix || defaultWaterFeePerMatrix}
-                        </TableCell>
-                        <TableCell className="font-medium">
-                          {floorPaymentPlans[floor.floorNumber.toString()]?.electricFeePerMatrix || defaultElectricFeePerMatrix}
-                        </TableCell>
-                        <TableCell>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => toggleRowExpansion(floor.floorNumber.toString())}
-                            className="flex items-center gap-2"
-                          >
-                            รายละเอียด
-                            {expandedRows.includes(floor.floorNumber.toString()) ? (
-                              <ChevronUp className="h-4 w-4" />
-                            ) : (
-                              <ChevronDown className="h-4 w-4" />
-                            )}
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-
-                      {/* Expandable floor detail Row */}
-                      {expandedRows.includes(floor.floorNumber.toString()) && (
-                        <TableRow>
-                          <TableCell colSpan={6} className="p-0">
-                            <Collapsible open={expandedRows.includes(floor.floorNumber.toString())}>
-                              <CollapsibleContent>
-                                <div className="p-4 bg-slate-400/10">
-                                  <div className="container grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 justify-center">
-                                    {generateRoomsForFloor(floor).map((room, index) => {
-                                      const paymentPlan = generatePaymentPlansForFloor(floor)[index];
-                                      return (
-                                        <Card key={index}>
-                                          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                            <CardTitle className="text-sm font-medium">
-                                              ห้อง {room.roomNumber}
-                                            </CardTitle>
-                                          </CardHeader>
-                                          <CardContent>
-                                            <div className="space-y-2">
-                                              <div className="text-xs text-gray-500">
-                                                ค่าเช่า (บาท)
-                                              </div>
-                                              <Input
-                                                type="number"
-                                                placeholder="ใส่ค่าเช่า"
-                                                className="w-full text-sm"
-                                                value={paymentPlan.fee}
-                                                onChange={(e) => {
-                                                  const newFee = Number(e.target.value);
-                                                  setFloorPaymentPlans((prev) => ({
-                                                    ...prev,
-                                                    [`${floor.floorNumber}_${room.roomNumber}`]: { 
-                                                      fee: newFee, 
-                                                      lateFee: paymentPlan.lateFee,
-                                                      waterFeePerMatrix: paymentPlan.waterFeePerMatrix,
-                                                      electricFeePerMatrix: paymentPlan.electricFeePerMatrix
-                                                    },
-                                                  }));
-                                                }}
-                                                min="0"
-                                              />
-                                              <div className="text-xs text-gray-500">
-                                                ค่าปรับล่าช้า (บาท)
-                                              </div>
-                                              <Input
-                                                type="number"
-                                                placeholder="ใส่ค่าปรับ"
-                                                className="w-full text-sm"
-                                                value={paymentPlan.lateFee}
-                                                onChange={(e) => {
-                                                  const newLateFee = Number(e.target.value);
-                                                  setFloorPaymentPlans((prev) => ({
-                                                    ...prev,
-                                                    [`${floor.floorNumber}_${room.roomNumber}`]: { 
-                                                      fee: paymentPlan.fee, 
-                                                      lateFee: newLateFee,
-                                                      waterFeePerMatrix: paymentPlan.waterFeePerMatrix,
-                                                      electricFeePerMatrix: paymentPlan.electricFeePerMatrix
-                                                    },
-                                                  }));
-                                                }}
-                                                min="0"
-                                              />
-                                              <div className="text-xs text-gray-500">
-                                                ค่าน้ำต่อหน่วย (บาท)
-                                              </div>
-                                              <Input
-                                                type="number"
-                                                placeholder="ใส่ค่าน้ำต่อหน่วย"
-                                                className="w-full text-sm"
-                                                value={paymentPlan.waterFeePerMatrix}
-                                                onChange={(e) => {
-                                                  const newWaterFeePerMatrix = Number(e.target.value);
-                                                  setFloorPaymentPlans((prev) => ({
-                                                    ...prev,
-                                                    [`${floor.floorNumber}_${room.roomNumber}`]: { 
-                                                      fee: paymentPlan.fee, 
-                                                      lateFee: paymentPlan.lateFee,
-                                                      waterFeePerMatrix: newWaterFeePerMatrix,
-                                                      electricFeePerMatrix: paymentPlan.electricFeePerMatrix
-                                                    },
-                                                  }));
-                                                }}
-                                                min="0"
-                                              />
-                                              <div className="text-xs text-gray-500">
-                                                ค่าไฟต่อหน่วย (บาท)
-                                              </div>
-                                              <Input
-                                                type="number"
-                                                placeholder="ใส่ค่าไฟต่อหน่วย"
-                                                className="w-full text-sm"
-                                                value={paymentPlan.electricFeePerMatrix}
-                                                onChange={(e) => {
-                                                  const newElectricFeePerMatrix = Number(e.target.value);
-                                                  setFloorPaymentPlans((prev) => ({
-                                                    ...prev,
-                                                    [`${floor.floorNumber}_${room.roomNumber}`]: { 
-                                                      fee: paymentPlan.fee, 
-                                                      lateFee: paymentPlan.lateFee,
-                                                      waterFeePerMatrix: paymentPlan.waterFeePerMatrix,
-                                                      electricFeePerMatrix: newElectricFeePerMatrix
-                                                    },
-                                                  }));
-                                                }}
-                                                min="0"
-                                              />
-                                            </div>
-                                          </CardContent>
-                                        </Card>
-                                      );
-                                    })}
-                                  </div>
-                                </div>
-                              </CollapsibleContent>
-                            </Collapsible>
+                  {floors.map((floor) => {
+                    const floorPaymentPlan = floorPaymentPlans[floor.floorNumber.toString()] || { 
+                      fee: defaultFee, 
+                      lateFee: defaultLateFee, 
+                      waterFeePerMatrix: defaultWaterFeePerMatrix, 
+                      electricFeePerMatrix: defaultElectricFeePerMatrix 
+                    };
+                    
+                    return (
+                      <React.Fragment key={floor.floorNumber}>
+                        <TableRow className="group">
+                          <TableCell>
+                            <Checkbox
+                              checked={selectedFloor.includes(floor.floorNumber)}
+                              onCheckedChange={(checked) =>
+                                handleSelectFloor(floor.floorNumber, checked as boolean)
+                              }
+                            />
+                          </TableCell>
+                          <TableCell className="font-medium">
+                            {floor.floorNumber}
+                          </TableCell>
+                          <TableCell className="font-medium">
+                            <Input
+                              type="number"
+                              placeholder="ใส่จำนวนห้อง"
+                              className="w-24 text-sm"
+                              value={floor.roomAmount}
+                              onChange={(e) => handleFloorRoomAmountChange(floor.floorNumber, Number(e.target.value))}
+                              min="1"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Input
+                              type="text"
+                              placeholder="ใส่รหัสห้อง"
+                              className="w-24 text-sm"
+                              value={floorRoomNumberPrefixes[floor.floorNumber.toString()] || floor.floorNumber.toString()}
+                              onChange={(e) => handleFloorRoomNumberPrefixChange(floor.floorNumber, e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Input
+                              type="number"
+                              placeholder="ใส่ค่าเช่า"
+                              className="w-full text-sm"
+                              value={floorPaymentPlan.fee}
+                              onChange={(e) => handleFloorFeeChange(floor.floorNumber, 'fee', Number(e.target.value))}
+                              min="0"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Input
+                              type="number"
+                              placeholder="ใส่ค่าปรับ"
+                              className="w-full text-sm"
+                              value={floorPaymentPlan.lateFee}
+                              onChange={(e) => handleFloorFeeChange(floor.floorNumber, 'lateFee', Number(e.target.value))}
+                              min="0"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Input
+                              type="number"
+                              placeholder="ใส่ค่าน้ำต่อหน่วย"
+                              className="w-full text-sm"
+                              value={floorPaymentPlan.waterFeePerMatrix}
+                              onChange={(e) => handleFloorFeeChange(floor.floorNumber, 'waterFeePerMatrix', Number(e.target.value))}
+                              min="0"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Input
+                              type="number"
+                              placeholder="ใส่ค่าไฟต่อหน่วย"
+                              className="w-full text-sm"
+                              value={floorPaymentPlan.electricFeePerMatrix}
+                              onChange={(e) => handleFloorFeeChange(floor.floorNumber, 'electricFeePerMatrix', Number(e.target.value))}
+                              min="0"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => toggleRowExpansion(floor.floorNumber.toString())}
+                              className="flex items-center gap-2"
+                            >
+                              รายละเอียด
+                              {expandedRows.includes(floor.floorNumber.toString()) ? (
+                                <ChevronUp className="h-4 w-4" />
+                              ) : (
+                                <ChevronDown className="h-4 w-4" />
+                              )}
+                            </Button>
                           </TableCell>
                         </TableRow>
-                      )}
-                    </React.Fragment>
-                  ))}
+
+                        {/* Expandable floor detail Row */}
+                        {expandedRows.includes(floor.floorNumber.toString()) && (
+                          <TableRow>
+                            <TableCell colSpan={9} className="p-0">
+                              <Collapsible open={expandedRows.includes(floor.floorNumber.toString())}>
+                                <CollapsibleContent>
+                                  <div className="p-4 bg-slate-400/10">
+                                    <div className="container grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 justify-center">
+                                      {generateRoomsForFloor(floor).map((room, index) => {
+                                        const paymentPlan = generatePaymentPlansForFloor(floor)[index];
+                                        return (
+                                          <Card key={index}>
+                                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                              <CardTitle className="text-sm font-medium">
+                                                ห้อง {room.roomNumber}
+                                              </CardTitle>
+                                            </CardHeader>
+                                            <CardContent>
+                                              <div className="space-y-2">
+                                                <div className="text-xs text-gray-500">
+                                                  ค่าเช่า (บาท)
+                                                </div>
+                                                <Input
+                                                  type="number"
+                                                  placeholder="ใส่ค่าเช่า"
+                                                  className="w-full text-sm"
+                                                  value={paymentPlan.fee}
+                                                  onChange={(e) => {
+                                                    const newFee = Number(e.target.value);
+                                                    setFloorPaymentPlans((prev) => ({
+                                                      ...prev,
+                                                      [`${floor.floorNumber}_${room.roomNumber}`]: { 
+                                                        fee: newFee, 
+                                                        lateFee: paymentPlan.lateFee,
+                                                        waterFeePerMatrix: paymentPlan.waterFeePerMatrix,
+                                                        electricFeePerMatrix: paymentPlan.electricFeePerMatrix
+                                                      },
+                                                    }));
+                                                  }}
+                                                  min="0"
+                                                />
+                                                <div className="text-xs text-gray-500">
+                                                  ค่าปรับล่าช้า (บาท)
+                                                </div>
+                                                <Input
+                                                  type="number"
+                                                  placeholder="ใส่ค่าปรับ"
+                                                  className="w-full text-sm"
+                                                  value={paymentPlan.lateFee}
+                                                  onChange={(e) => {
+                                                    const newLateFee = Number(e.target.value);
+                                                    setFloorPaymentPlans((prev) => ({
+                                                      ...prev,
+                                                      [`${floor.floorNumber}_${room.roomNumber}`]: { 
+                                                        fee: paymentPlan.fee, 
+                                                        lateFee: newLateFee,
+                                                        waterFeePerMatrix: paymentPlan.waterFeePerMatrix,
+                                                        electricFeePerMatrix: paymentPlan.electricFeePerMatrix
+                                                      },
+                                                    }));
+                                                  }}
+                                                  min="0"
+                                                />
+                                                <div className="text-xs text-gray-500">
+                                                  ค่าน้ำต่อหน่วย (บาท)
+                                                </div>
+                                                <Input
+                                                  type="number"
+                                                  placeholder="ใส่ค่าน้ำต่อหน่วย"
+                                                  className="w-full text-sm"
+                                                  value={paymentPlan.waterFeePerMatrix}
+                                                  onChange={(e) => {
+                                                    const newWaterFeePerMatrix = Number(e.target.value);
+                                                    setFloorPaymentPlans((prev) => ({
+                                                      ...prev,
+                                                      [`${floor.floorNumber}_${room.roomNumber}`]: { 
+                                                        fee: paymentPlan.fee, 
+                                                        lateFee: paymentPlan.lateFee,
+                                                        waterFeePerMatrix: newWaterFeePerMatrix,
+                                                        electricFeePerMatrix: paymentPlan.electricFeePerMatrix
+                                                      },
+                                                    }));
+                                                  }}
+                                                  min="0"
+                                                />
+                                                <div className="text-xs text-gray-500">
+                                                  ค่าไฟต่อหน่วย (บาท)
+                                                </div>
+                                                <Input
+                                                  type="number"
+                                                  placeholder="ใส่ค่าไฟต่อหน่วย"
+                                                  className="w-full text-sm"
+                                                  value={paymentPlan.electricFeePerMatrix}
+                                                  onChange={(e) => {
+                                                    const newElectricFeePerMatrix = Number(e.target.value);
+                                                    setFloorPaymentPlans((prev) => ({
+                                                      ...prev,
+                                                      [`${floor.floorNumber}_${room.roomNumber}`]: { 
+                                                        fee: paymentPlan.fee, 
+                                                        lateFee: paymentPlan.lateFee,
+                                                        waterFeePerMatrix: paymentPlan.waterFeePerMatrix,
+                                                        electricFeePerMatrix: newElectricFeePerMatrix
+                                                      },
+                                                    }));
+                                                  }}
+                                                  min="0"
+                                                />
+                                              </div>
+                                            </CardContent>
+                                          </Card>
+                                        );
+                                      })}
+                                    </div>
+                                  </div>
+                                </CollapsibleContent>
+                              </Collapsible>
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </div>

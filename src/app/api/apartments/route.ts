@@ -1,25 +1,20 @@
-import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/drizzle/db";
-import { ApartmentTable } from "@/drizzle/schema";
+import { NextRequest, NextResponse } from 'next/server';
+import { getCurrentUser } from '@/auth/nextjs/currentUser';
+import getApartments from '@/lib/getApartments';
 
 export async function GET(request: NextRequest) {
   try {
-    const apartments = await db.query.ApartmentTable.findMany({
-      columns: {
-        id: true,
-        name: true,
-        address: true
-      },
-      orderBy: (table, { asc }) => asc(table.name)
-    });
+    const currentUser = await getCurrentUser({ withFullUser: true });
+    
+    if (!currentUser) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
+    const apartments = await getApartments(currentUser.id);
+    
     return NextResponse.json(apartments);
-
   } catch (error) {
-    console.error("Error fetching apartments:", error);
-    return NextResponse.json(
-      { message: "เกิดข้อผิดพลาดในการดึงข้อมูลหอพัก" },
-      { status: 500 }
-    );
+    console.error('Error fetching apartments:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 } 

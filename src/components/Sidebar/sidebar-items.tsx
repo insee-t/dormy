@@ -1,4 +1,4 @@
-import { Bell, CreditCard, HomeIcon, Users } from "lucide-react";
+import { Bell, CreditCard, HomeIcon, Users, Megaphone } from "lucide-react";
 import { SidebarItemType } from "./sidebar";
 import Image from "next/image";
 import layoutIcon from "/public/assets/icon/layout.png"
@@ -150,6 +150,12 @@ export const sectionItemsWithTeams = [
         href: "/dashboard/tenants",
         startContent: <Users size={24} className="text-default-500 group-data-[selected=true]:text-foreground" />,
         title: "ผู้เช่า",
+      },
+      {
+        key: "announcements",
+        href: "/dashboard/announcements",
+        startContent: <Megaphone size={24} className="text-default-500 group-data-[selected=true]:text-foreground" />,
+        title: "ประกาศ",
       },
       {
         key: "new_apartment",
