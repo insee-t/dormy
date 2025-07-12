@@ -14,6 +14,8 @@ import PrintInvoiceButton from "@/components/PrintInvoiceButton";
 async function saveMeterReadings(formData: FormData) {
   "use server"
 
+  let redirectPath: string | null = null;
+
   try {
     const currentUser = await getCurrentUser({ withFullUser: true, redirectIfNotFound: true });
     const now = new Date();
@@ -182,10 +184,14 @@ async function saveMeterReadings(formData: FormData) {
     }
 
     console.log("บันทึกข้อมูลมิเตอร์เรียบร้อยแล้ว");
-    redirect('/dashboard/meter');
+    redirectPath = '/dashboard/meter';
   } catch (error) {
     console.error("Error saving meter readings:", error);
-    redirect('/dashboard/meter');
+    redirectPath = '/dashboard/meter';
+  } finally {
+    if (redirectPath) {
+      redirect(redirectPath);
+    }
   }
 }
 
@@ -229,6 +235,8 @@ async function getRooms(apartment: number, now: Date) {
 
 async function sendAllBillsAction(formData: FormData) {
   "use server"
+
+  let redirectPath: string | null = null;
 
   try {
     const currentUser = await getCurrentUser({ withFullUser: true, redirectIfNotFound: true });
@@ -326,10 +334,14 @@ async function sendAllBillsAction(formData: FormData) {
     }
 
     console.log("ส่งบิลทั้งหมดเรียบร้อยแล้ว");
-    redirect('/dashboard/meter');
+    redirectPath = '/dashboard/meter'
   } catch (error) {
     console.error("Error sending all bills:", error);
-    redirect('/dashboard/meter');
+    redirectPath = '/dashboard/meter'
+  } finally {
+    if (redirectPath) {
+      redirect(redirectPath);
+    }
   }
 }
 

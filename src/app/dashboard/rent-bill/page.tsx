@@ -20,6 +20,8 @@ import PrintInvoiceButton from "@/components/PrintInvoiceButton";
 // Save rent bills for each room for the selected month/year
 async function saveRentBills(formData: FormData) {
   "use server";
+
+  let redirectPath: string | null = null;
   try {
     const currentUser = await getCurrentUser({ withFullUser: true, redirectIfNotFound: true });
     const now = new Date();
@@ -113,10 +115,14 @@ async function saveRentBills(formData: FormData) {
         }
       }
     }
-    redirect("/dashboard/rent-bill");
+    redirectPath = "/dashboard/rent-bill";
   } catch (error) {
     console.error("Error saving rent bills:", error);
-    redirect("/dashboard/rent-bill");
+    redirectPath = "/dashboard/rent-bill";
+  } finally {
+    if (redirectPath) {
+      redirect(redirectPath);
+    }
   }
 }
 
@@ -124,6 +130,8 @@ async function saveRentBills(formData: FormData) {
 async function sendAllBillsAction(formData: FormData) {
   "use server";
   
+  let redirectPath: string | null = null;
+
   try {
     const currentUser = await getCurrentUser({ withFullUser: true, redirectIfNotFound: true });
     const now = new Date();
@@ -186,10 +194,14 @@ async function sendAllBillsAction(formData: FormData) {
     }
     
     console.log("ส่งบิลค่าเช่าทั้งหมดเรียบร้อยแล้ว");
-    redirect('/dashboard/rent-bill');
+    redirectPath = '/dashboard/rent-bill';
   } catch (error) {
     console.error("Error sending all rent bills:", error);
-    redirect('/dashboard/rent-bill');
+    redirectPath = '/dashboard/rent-bill';
+  } finally {
+    if (redirectPath) {
+      redirect(redirectPath);
+    }
   }
 }
 
